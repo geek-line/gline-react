@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import "./post.css";
 
 class Post extends React.Component{
     constructor(props){
@@ -10,29 +10,30 @@ class Post extends React.Component{
       }
     }
     componentDidMount(){
-      return fetch('http://localhost:3000/posts')
-        .then((res) => {res.json()})
+      fetch('http://localhost:3000/posts')
+        .then(res => res.json())
         .then((json)=>{
           this.setState({
-            loading: true,
+            loading: false,
             data: json,
           })
         })
     }
     render(){
-      if(this.state.loading){
-        return(
-          <div className="Post-header">
-            <p>{ this.state.data }</p>
+      
+      return(
+        <div className="Posts">
+          <div>
+          {
+            this.state.data.map(post => {
+              return (
+                <div key={post.id}>{ post.id }</div>
+              )
+            })
+          }
           </div>
-        );
-      }else{
-        return(
-          <div className="Post-header">
-            <p>Loading...</p>
-          </div>
-        );
-      }
+        </div>
+      );
     }
 }
 export default Post;
