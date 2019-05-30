@@ -1,12 +1,10 @@
 import React from 'react';
-import './App.css';
-
-import Post from './components/post';
+import Login from "./components/login";
 
 function App() {
   return (
     <div className="App">
-      <Post />
+      <Login />
     </div>
   );
 }
