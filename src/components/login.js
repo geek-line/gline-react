@@ -1,5 +1,5 @@
 import React from "react";
-import "../../bower_components/materialize/dist/css/materialize.css";
+import "../bower_components/materialize/dist/css/materialize.css";
 
 class Login extends React.Component{
     constructor(){
