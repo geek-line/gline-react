@@ -60,9 +60,11 @@ class Index extends React.Component{
 
        
       </div>
-      {this.state.user ? (
+      {this.props.user ? (
           <div>
-                <div>E-mail: {this.state.user && this.state.user.email}</div>
+                <div>名前: {this.props.user && this.props.user.displayName}</div>
+                <div>E-mail: {this.props.user && this.props.user.email}</div>
+                <div>picture: {this.props.user && this.props.user.photoURL || '/images/profile_placeholder.png'}</div>
                 <li className="gline-access" onClick={this.logout}><Link to='/login'>ログアウト</Link></li>
                 </div>
                 ) : (
