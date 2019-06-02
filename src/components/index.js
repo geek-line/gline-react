@@ -11,14 +11,10 @@ class Index extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            user:this.props.user
+            
         }
         
     }
-
-    logout() {
-        firebase.auth().signOut()
-      }
 
     render(){
         console.log(this.props.user)
@@ -26,8 +22,8 @@ class Index extends React.Component{
             <BrowserRouter>
             <div>
                  <header>
-                 { this.props.user
-                 ? (
+                 { this.props.user?
+                 (
                     <div className="header-content">
                         <ul className="header-list">
                             <li className="header-web"><Link to='/web'>WEB</Link></li>
@@ -64,8 +60,8 @@ class Index extends React.Component{
           <div>
                 <div>名前: {this.props.user && this.props.user.displayName}</div>
                 <div>E-mail: {this.props.user && this.props.user.email}</div>
-                <div>picture: {this.props.user && this.props.user.photoURL || '/images/profile_placeholder.png'}</div>
-                <li className="gline-access" onClick={this.logout}><Link to='/login'>ログアウト</Link></li>
+                <div>picture: <img src  ={this.props.user.photoURL || '/images/profile_placeholder.png'}></img></div>
+                <li className="gline-logout" onClick={this.logout}><Link to='/login'>ログアウト</Link></li>
                 </div>
                 ) : (
                    <div></div>

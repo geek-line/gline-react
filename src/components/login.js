@@ -14,7 +14,7 @@ class Login extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            user:null
+            
         }
         
     }
@@ -27,56 +27,55 @@ class Login extends React.Component{
             
                 
                  <header>
-                 {this.props.user ? (
+                 {this.props.user? (
                      <div>
-                     <li className="gline-access" onClick={this.props.logout}><Link to='/login'>ログアウト</Link></li>
-                     <Route path='/login' component={Login} />
+                        <li className="gline-access" onClick={this.props.logout}><Link to='/login'>ログアウト</Link></li>
+                        <Route path='/login' component={Login} />
                      </div>
-                  ) : (
-                    <div className="header-content">
-                        <ul className="header-list">
-                            <li className="header-logo"><Link to='/login'>GLINE</Link></li>
-                            <li className ="header-overview"><Link to='/about'>GLINEの概要</Link></li>
-                            <li className="header-help"><Link to='/help'>ヘルプ</Link></li>
-                            <li className="header-login" onClick={this.props.login}><Link to='/index'>ログイン</Link></li>
-                            
-                        </ul>
-                        
-                       
-                    </div>
-                 
-                    )}
+                 ) : (
+                        this.props.isLogging ? 
+                        (
+                            <div><h1>読み込み中</h1></div>
+                        ) : 
+                        (
+                            <div className="header-content">
+                                <ul className="header-list">
+                                    <li className="header-logo"><Link to='/login'>GLINE</Link></li>
+                                    <li className ="header-overview"><Link to='/about'>GLINEの概要</Link></li>
+                                    <li className="header-help"><Link to='/help'>ヘルプ</Link></li>
+                                    <li className="header-login" onClick={this.props.login}><Link to='/index'>ログイン</Link></li>
+                                    
+                                </ul>
+                            </div>
+                       )
+                    
+                  )}
                 </header>
             
                     
                    
                 <div className="main">
-                <div className="App">
-                     <p className="App-intro">
-         
-        </p>
-
-       
-      </div>
-      {this.props.user ? (
-          <div>
-               
-                </div>
-                ) : (
-                    <div>
-                    <li className="gline-access" onClick={this.props.login}><Link to='/index'>Glineにアクセス</Link></li>
-                    <Route path='/post' component={Post} />
-                    <Route path='/about' component={About} />
-                    <Route path='/help' component={Help} />
-                    <Route path='/index' component={Index} />
+                    <div className="App">
+                        <p className="App-intro"></p>        
                     </div>
+
+                    {this.props.user ? (
+                            <div>
+                
+                            </div>
+                    ) : (
+                            <div>
+                                <li className="gline-access" onClick={this.props.login}><Link to='/index'>Glineにアクセス</Link></li>
+                                <Route path='/post' component={Post} />
+                                <Route path='/about' component={About} />
+                                <Route path='/help' component={Help} />
+                                <Route path='/index' component={Index} />
+                            </div>
                     )}
                 </div>
 
                 <footer>
-                    <div className="footer-content">
-
-                    </div>
+                    <div className="footer-content"></div>
                 </footer>
             </div>
             </BrowserRouter>

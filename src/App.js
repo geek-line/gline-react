@@ -8,7 +8,8 @@ class App extends React.Component {
   constructor(){
     super()
     this.state = {
-        user:null
+        user:null,
+        isLogging:false
     }
     
   }
@@ -19,27 +20,27 @@ class App extends React.Component {
     })
   }
 
-login() {
+  login=()=> {
     const provider = new firebase.auth.GoogleAuthProvider()
-    firebase.auth().signInWithRedirect(provider)
-   
+    firebase.auth().signInWithPopup(provider)
+    this.setState({ isLogging:true }) 
   }
 
-logout() {
+  logout=()=> {
     firebase.auth().signOut()
-   
+    this.setState({ isLogging:false }) 
   }
 
   render(){
-  return (
-    <div className="App">
-      
-      <Login login={this.login } logout={this.logout} user ={this.state.user}/>
-      <Index logout={this.logout} user ={this.state.user}/>
-      
+    return (
+      <div className="App">
         
-    </div>
-  );
+        <Login login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
+        <Index logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
+        
+          
+      </div>
+    );
   }
 }
 export default App;
