@@ -70,7 +70,7 @@ class Index extends React.Component{
                         <div>
                         <form>
                         <select name = "course" value={this.state.course} onChange={this.handleInput}>
-                            <option  value="web"> web</option>
+                            <option value="web"> web</option>
                             <option value="game"> game</option>
                             <option value="iphone">iphone</option>
                         </select>
