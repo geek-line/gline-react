@@ -1,8 +1,8 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
-import "./style.css"
+import "./style.css";
 
-class Login extends React.Component{
+class LandingPage extends React.Component{
     constructor(){
         super()
         this.state={
@@ -15,10 +15,10 @@ class Login extends React.Component{
         
         return(
             <div>
-                ログイン画面です
+                indexページです
             </div>
         );
     }
 }
 
-export default Login
+export default LandingPage

@@ -1,5 +1,4 @@
 import React from "react";
-import "./post.css";
 
 class Post extends React.Component{
     constructor(props){
@@ -36,4 +35,4 @@ class Post extends React.Component{
       );
     }
 }
-export default Post;
+export default Post

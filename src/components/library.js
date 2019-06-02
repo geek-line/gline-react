@@ -1,8 +1,10 @@
+//ライブラリー閲覧画面を編集
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
-import "./style.css"
+import "./style.css";
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
-class Login extends React.Component{
+class Library extends React.Component{
     constructor(){
         super()
         this.state={
@@ -15,10 +17,10 @@ class Login extends React.Component{
         
         return(
             <div>
-                ログイン画面です
+                LandingPageです
             </div>
         );
     }
 }
 
-export default Login
+export default Library

@@ -1,8 +1,10 @@
+//解答の閲覧画面のコンポーネントを編集
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
-import "./style.css"
+import "./style.css";
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
-class Login extends React.Component{
+class Answer extends React.Component{
     constructor(){
         super()
         this.state={
@@ -15,10 +17,10 @@ class Login extends React.Component{
         
         return(
             <div>
-                ログイン画面です
+                解答閲覧画面です
             </div>
         );
     }
 }
 
-export default Login
+export default Answer
