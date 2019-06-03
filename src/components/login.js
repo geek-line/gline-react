@@ -31,6 +31,7 @@ class Login extends React.Component{
                      <div>
                         <li className="gline-access" onClick={this.props.logout}><Link to='/login'>ログアウト</Link></li>
                         <Route path='/login' component={Login} />
+                        
                      </div>
                  ) : (
                         this.props.isLogging ? 
@@ -66,8 +67,9 @@ class Login extends React.Component{
                     ) : (
                             <div>
                                 <li className="gline-access" onClick={this.props.login}><Link to='/index'>Glineにアクセス</Link></li>
+                                
                                 <Route path='/post' component={Post} />
-                                <Route path='/about' component={About} />
+                                
                                 <Route path='/help' component={Help} />
                                 <Route path='/index' component={Index} />
                             </div>

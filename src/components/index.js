@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { db } from '../firebase'
 import Post from "./post";
 import firebase from '../firebase'
-
+import Select from 'react-select';
 
 
 
@@ -70,14 +70,15 @@ class Index extends React.Component{
                         <div>
                         <form>
                         <select name = "course" value={this.state.course} onChange={this.handleInput}>
-                            <option value="web"> web</option>
+                            <option defaultValue="web"> web</option>
                             <option value="game"> game</option>
                             <option value="iphone">iphone</option>
-                        </select>
+                        </select> 
                           
                         <button onClick={this.save}>send</button>
                         
                         </form>
+                
                         </div>
                     </div>
                 )
