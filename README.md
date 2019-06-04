@@ -1,3 +1,20 @@
+##ページの説明
+
+ladingPage.js = 一番最初のランディングページのコンポーネント
+login.js = ログインページのコンポーネント
+index.js = 回答一覧のコンポーネント
+post.js = 投稿ページのコンポーネント
+ansewer.js = 回答詳細ページのコンポーネント
+library.js = ライブラリー一覧のコンポーネント
+mypage.js = マイページのコンポーネント
+
+##その他のJSファイル作成のルール
+
+ページの要素としてヘッダーなどをコンポーネント化したJSファイルは
+comonents/itemsのなかに保存してください
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

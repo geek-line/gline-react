@@ -5,6 +5,7 @@ import LandingPage from './components/landingPage'
 import Post from './components/post'
 import Library from './components/library'
 import Answer from './components/answer'
+import MyPage from './components/mypage'
 
 class App extends React.Component{
   constructor(){
@@ -21,6 +22,7 @@ class App extends React.Component{
         <Route path='/post' component={Post} />
         <Route path='/library' component={Library}/>
         <Route path='/answer' component={Answer} />
+        <Route path='/mypage' component={MyPage}/>
       </div>
   </BrowserRouter>
     )
