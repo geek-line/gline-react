@@ -7,8 +7,7 @@ post.js = 投稿ページのコンポーネント
 ansewer.js = 回答詳細ページのコンポーネント  
 library.js = ライブラリー一覧のコンポーネント  
 mypage.js = マイページのコンポーネント  
-aaaaa  
-uuuuu
+
 
 # その他のJSファイル作成のルール
 
