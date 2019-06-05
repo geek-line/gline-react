@@ -2,6 +2,7 @@ import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Header from './items/login-header'
 
 class LandingPage extends React.Component{
     constructor(){
@@ -16,6 +17,7 @@ class LandingPage extends React.Component{
         
         return(
             <div>
+                <Header/>
                 LandingPageです
             </div>
         );
