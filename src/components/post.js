@@ -19,8 +19,12 @@ class Post extends React.Component{
           })
         })
     }
+    postBody(){
+
+      fetch('http://localhost:3000/posts')
+      .then
+    }
     render(){
-      
       return(
         <div className="Posts">
           <div>
@@ -32,6 +36,8 @@ class Post extends React.Component{
             })
           }
           </div>
+          <input/>
+          <button onClick={postBody}>押して〜</button>
         </div>
       );
     }
