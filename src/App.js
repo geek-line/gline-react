@@ -9,6 +9,7 @@ import Answer from './components/answer'
 import MyPage from './components/mypage'
 import './bower_components/materialize/dist/css/materialize.css'
 import firebase from './firebase'
+import Index from './components/index'
 
 class App extends React.Component{
   constructor(){
@@ -50,6 +51,7 @@ class App extends React.Component{
           <Route exact path='/login' component={Login}/>
           <Route path='/post' component={Post} />
           <Route path='/library' component={Library}/>
+          <Route path='/index' component={Index}/>
           <Route path='/answer' component={Answer} />
           <Route path='/mypage' component={MyPage}/>
         </div>

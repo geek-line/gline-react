@@ -2,7 +2,7 @@ import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
 
-class LandingPage extends React.Component{
+class Index extends React.Component{
     constructor(){
         super()
         this.state={
@@ -21,4 +21,4 @@ class LandingPage extends React.Component{
     }
 }
 
-export default LandingPage
+export default Index

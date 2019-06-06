@@ -7,39 +7,39 @@ import firebase from '../firebase'
 import Login from "./login";
 
 
-class LandingPage extends React.Component{
-    constructor(props){
+class LandingPage extends React.Component {
+    constructor(props) {
         super(props)
-        this.state={
-           
+        this.state = {
+
         }
-        
+
     }
 
 
 
-    render(){
-        
-        return(
+    render() {
+
+        return (
             <BrowserRouter>
-            <div>
-            {this.props.user? (
-                <div></div>
-            )
-            :
-            (
-                this.props.isLogging ? (
-                    <div>読み込み中です</div>
-                )
-                :
-                (
-                  <div>
-                  <li className="gline-access" onClick={this.props.login}><Link to='/login'>Glineにアクセス</Link></li>
-                  </div>
-                )
-            )
-                }
-            </div>
+                <div>
+                    {this.props.user ? (
+                        <div></div>
+                    )
+                        :
+                        (
+                            this.props.isLogging ? (
+                                <div>読み込み中です</div>
+                            )
+                                :
+                                (
+                                    <div>
+                                        <li className="gline-access" onClick={this.props.login}><Link to='/login'>Glineにアクセス</Link></li>
+                                    </div>
+                                )
+                        )
+                    }
+                </div>
             </BrowserRouter>
         );
     }
