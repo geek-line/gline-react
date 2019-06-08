@@ -8,8 +8,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
 
 class Index extends React.Component{
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
             posts:[],
             postpage:false,
@@ -84,7 +84,8 @@ class Index extends React.Component{
         console.log(this.state.user)
         return(
             <div>
-                {
+
+                {this.props.user?(
                      this.state.posts.map((post, i) => { 
                         return ( 
                             <div key={i}>
@@ -102,10 +103,14 @@ class Index extends React.Component{
                         )
 
                     })
-                    
+                )   
+                :
+                (
+                    <div></div>
+                )
                 }
-
-                {this.state.postpage?(
+            {this.props.user?(
+                this.state.postpage?(
                     <div>
                     <div><Post user = {this.state.user} postpage={this.state.postpage} changepost={this.changepost}/></div>
                     <button onClick={this.changepost}>投稿をやめる</button>
@@ -115,9 +120,13 @@ class Index extends React.Component{
                 (
                     <button onClick={this.post}>投稿する</button>
                 )
-
-                }
-                 
+            )   
+            :
+            (
+                <div></div>
+            )
+            }
+                
             </div>
         );
     }
