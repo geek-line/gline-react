@@ -72,7 +72,8 @@ class App extends React.Component{
 
   logout=()=> {
     firebase.auth().signOut()
-    this.setState({ isLogging:false }) 
+    this.setState({ isLogging:false,user:null }) 
+   
   }
 
    render(){

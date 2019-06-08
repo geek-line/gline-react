@@ -66,7 +66,7 @@ class Post extends React.Component {
         console.log(this.state.imageurl)
        
         e.preventDefault()
-        storage.child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
+        storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
             console.log('Uploaded a blob or file!');
         });
         let id =0;

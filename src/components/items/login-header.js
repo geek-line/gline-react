@@ -12,11 +12,7 @@ class LoginHeader extends React.Component{
         
     }
 
-    componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-          this.setState({ user })
-        })
-      }
+    
    
     render(){
      return(

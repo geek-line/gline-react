@@ -33,17 +33,17 @@ class LandingPage extends React.Component {
                     {this.props.user ? (
                         <Login/>
                     )
-                        :
-                        (
+                    :
+                    (
                             this.props.isLogging ? (
                                 <div>読み込み中です</div>
                             )
-                                :
-                                (
+                            :
+                            (
                                     <div>
                                         <li className="gline-access"><button onClick={this.props.login}><Link to='/login'>Glineにアクセス</Link></button></li>
                                     </div>
-                                )
+                            )
                         )
                     }
                 </div>

@@ -121,7 +121,7 @@ class Login extends React.Component {
                                         ) : (
                                             this.state.course == 'game' || this.state.course == 'web' || this.state.course == 'iphone' ?
                                                 (
-                                                    <button onClick={this.save}><Link to='/post'>geek-lineに登録</Link></button>
+                                                    <button onClick={this.save}><Link to='/index'>geek-lineに登録</Link></button>
 
                                                 ) : (
                                                     <div>コースを入力してください(WEBコース="web",GAMEコース="game",iPhoneコース="iphone")</div>
