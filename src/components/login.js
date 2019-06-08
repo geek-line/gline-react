@@ -3,8 +3,8 @@ import "../bower_components/materialize/dist/css/materialize.css";
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { db } from '../firebase'
 import firebase from '../firebase'
-
-
+import Index from './index'
+import PropTypes from 'prop-types';
 
 
 
@@ -14,17 +14,26 @@ class Login extends React.Component {
         this.state = {
 
             course: '',
-            nickname: ''
+            nickname: '',
+            logined: true
         }
 
         this.send = this.save.bind(this);
     }
+
+    componentDidMount() {
+        console.log("login")
+        firebase.auth().onAuthStateChanged(user => {
+          this.setState({ user })
+        })
+      }
 
     handleInputcourse(event) {
         this.setState({
 
             course: event.target.value
         })
+        
     }
     handleInputnickname(event) {
         this.setState({
@@ -43,11 +52,11 @@ class Login extends React.Component {
     // }
 
 
+  
 
 
     save = (e) => {
-        e.preventDefault()
-
+      
         const user = firebase.auth().currentUser
         if (user) {
             db.collection("users").doc(user.uid).set({
@@ -58,12 +67,17 @@ class Login extends React.Component {
                 nickname: this.state.nickname
             })
                 .then(() => {
+                    this.setState({
+                        logined : true
+                    })
                     console.log(`追加に成功しました `);
                 })
                 .catch((error) => {
                     console.log(`追加に失敗しました (${error})`);
                 });
         }
+
+        
     }
 
 
@@ -71,30 +85,11 @@ class Login extends React.Component {
         console.log(this.props.user)
         return (
             
-            <BrowserRouter>
+            
                 <div>
                     <header>
 
-                        {this.props.user ?
-                            (
-                                <div className="header-content">
-                                    <ul className="header-list">
-
-                                    </ul>
-
-                                </div>
-                            )
-                            :
-                            (
-                                <div className="header-content">
-
-
-                                </div>
-
-
-
-
-                            )}
+                      
                     </header>
                     <div className="main">
                         <div className="App">
@@ -104,20 +99,21 @@ class Login extends React.Component {
 
 
                         </div>
-
-                        {this.props.user ? (
+                    {this.state.logined?(
+                        
+                        this.props.user ? (
                             <div>
-                                <div>名前: {this.props.user && this.props.user.displayName}</div>
-                                <div>E-mail: {this.props.user && this.props.user.email}</div>
-                                <div><img src={this.props.user.photoURL || '/images/profile_placeholder.png'}></img></div>
-                                <form>
-                                    <div>ニックネームを入力:
+                                <div className="plfname">名前: {this.props.user && this.props.user.displayName}</div>
+                                <div className="plfemail">E-mail: {this.props.user && this.props.user.email}</div>
+                                <div className="plf">コース: {this.props.user && this.props.user.web}</div>
+                               <form>
+                                    <div className="plfnickname">ニックネームを入力:
                     <input type='text' value={this.state.nickname} onChange={this.handleInputnickname.bind(this)} />
                                     </div>
-                                    <div>コースを入力:
+                                    <div className="plfcourse">コースを入力:
                     <input type='text' value={this.state.course} onChange={this.handleInputcourse.bind(this)} />
                                     </div>
-
+                                    
 
                                     {this.state.nickname == '' ?
                                         (
@@ -125,36 +121,53 @@ class Login extends React.Component {
                                         ) : (
                                             this.state.course == 'game' || this.state.course == 'web' || this.state.course == 'iphone' ?
                                                 (
-                                                    <button onClick={this.save}><Link to='/index'>geek-lineに登録</Link></button>
+                                                    <button onClick={this.save}><Link to='/post'>geek-lineに登録</Link></button>
 
                                                 ) : (
                                                     <div>コースを入力してください(WEBコース="web",GAMEコース="game",iPhoneコース="iphone")</div>
 
                                                 )
                                         )
+                        
                                     }
 
 
                                 </form>
-                                <li className="gline-logout" onClick={this.logout}><Link to='/'>ログアウト</Link></li>
+
+                                <li className="gline-logout" onClick={this.props.logout}><Link to='/'>ログアウト</Link></li>
                             </div>
                         ) : (
                                 <div></div>
-                            )}
-                    </div>
+                            )
+        
+          
+                        
+                    
+                    )
+                    :
+                    (
+                        <div></div>  
+                    )
+                    }
 
+</div>
                     <footer>
                         <div className="footer-content">
 
                         </div>
                     </footer>
                 </div>
-            </BrowserRouter>
-           
+                
+            
+            
         );
     }
 }
-
+Login.propTypes = {
+      user: PropTypes.string.isRequired,
+    };
+    
+     
 
 
 export default Login

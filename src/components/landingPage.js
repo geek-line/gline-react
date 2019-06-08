@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import LoginHeader from './items/login-header'
 import firebase from '../firebase'
 import Login from "./login";
-
+import PropTypes from 'prop-types';
 
 class LandingPage extends React.Component {
     constructor(props) {
@@ -16,15 +16,22 @@ class LandingPage extends React.Component {
 
     }
 
+    componentWillMount() {
+        firebase.auth().onAuthStateChanged(user => {
+          this.setState({ user })
 
+        })
+        console.log("おはよう")
+      }
+   
 
     render() {
 
         return (
-            <BrowserRouter>
+           
                 <div>
                     {this.props.user ? (
-                        <div></div>
+                        <Login/>
                     )
                         :
                         (
@@ -34,15 +41,18 @@ class LandingPage extends React.Component {
                                 :
                                 (
                                     <div>
-                                        <li className="gline-access" onClick={this.props.login}><Link to='/login'>Glineにアクセス</Link></li>
+                                        <li className="gline-access"><button onClick={this.props.login}><Link to='/login'>Glineにアクセス</Link></button></li>
                                     </div>
                                 )
                         )
                     }
                 </div>
-            </BrowserRouter>
+            
         );
     }
 }
-
+LandingPage.propTypes = {
+    user: PropTypes.string.isRequired,
+  };
+  
 export default LandingPage
