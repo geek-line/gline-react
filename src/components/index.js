@@ -5,41 +5,63 @@ import Post from "./post"
 import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { storage } from '../firebase'
 
 class Index extends React.Component{
     constructor(){
         super()
         this.state={
-            posts:[]
+            posts:[],
+            postpage:false,
+            user:null,
+            pictureurl:""
+
+
         }
     }
 
-componentDidMount(){
+    changepost=()=>{
+        this.setState({
+        postpage:false
+    })
+    }
+
+    componentDidMount(){
 
         
+        firebase.auth().onAuthStateChanged(user => {
+            this.setState({ user })
+          })
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
         postsref.get().then((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                  const post = postdoc.data();
-                
-                
+                 const pathref = storage.ref(`images/${post.postpicname}`)
+                 pathref.getDownloadURL().then((url)=>{
+                     this.setState({
+                        pictureurl:url
+                     })
+                 }
+                 )
+
                 return {
                     title:post.title,
                     body:post.body,
                     name:post.name,
-                    pic:post.photoURL || '/images/profile_placeholder.png',
+                    pic:post.pic,
                     course:post.course,
                     nickname: post.nickname,
                     favcount: post.favcount,
                     librarycount: post.librarycount,
                     timestamp: post.timestamp,
-                    
+                    postpicname: post.postpicname
                 }   
                
             })
             this.setState({
-                posts : posts
+                posts : posts,
+                
             })
            
         });
@@ -48,29 +70,29 @@ componentDidMount(){
 
     }
 
-    post(){
-        return(
-            <div>
-            <Post/>
-            </div>
-        )
+    post = () =>{
+       
+            this.setState({
+                postpage : true
+            })  
       
     }
 
    
 
     render(){
-        
+        console.log(this.state.user)
         return(
             <div>
                 {
-                     this.state.posts.map((post) => { 
+                     this.state.posts.map((post, i) => { 
                         return ( 
-                            <div>
+                            <div key={i}>
                                 {post.title}
                                 {post.body}
                                 {post.name}
-                                {post.pic}
+                                <img src={this.state.pictureurl}></img> 
+                               
                                 {post.course}
                                 {post.nickname}
                                 {post.favcount}
@@ -82,7 +104,20 @@ componentDidMount(){
                     })
                     
                 }
-                 <button onClick={this.post}>投稿する</button>
+
+                {this.state.postpage?(
+                    <div>
+                    <div><Post user = {this.state.user} postpage={this.state.postpage} changepost={this.changepost}/></div>
+                    <button onClick={this.changepost}>投稿をやめる</button>
+                    </div>
+                )
+                :
+                (
+                    <button onClick={this.post}>投稿する</button>
+                )
+
+                }
+                 
             </div>
         );
     }

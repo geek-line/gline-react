@@ -3,7 +3,7 @@ import "../bower_components/materialize/dist/css/materialize.css";
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { db } from '../firebase'
 import firebase from '../firebase'
-
+import { storage } from '../firebase'
 
 
 
@@ -16,12 +16,17 @@ class Post extends React.Component {
             favcount: 0,
             librarycount: 0,
             answered:false,
-            timestamp:null
+            timestamp:null,
+            file:null,
+            imageurl:""
+            
+
         }
 
         this.save = this.save.bind(this);
         this.handleInputtitle = this.handleInputtitle.bind(this);
         this.handleInputbody = this.handleInputbody.bind(this);
+        this.handleFileSelect = this.handleFileSelect.bind(this);
     }
 
     handleInputtitle(event) {
@@ -30,28 +35,40 @@ class Post extends React.Component {
             title: event.target.value
         })
     }
+
     handleInputbody(event) {
         this.setState({
             body: event.target.value
 
         })
     }
-    // coursecheck = () => {
-    //     var userdb = db.collection('users').doc('user.uid');
-    //     if (userdb.course == "") {
 
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // }
+    handleFileSelect = (e) => {
+        const file = e.target.files[0]
 
+        const reader = new FileReader()
+        reader.addEventListener("load",()=>{
+            this.setState({
+                imageurl: reader.result,
+                file
+            })
 
+        })
+        if(file){
+            reader.readAsDataURL(file)
+        }
+    }
 
+    
 
     save = (e) => {
+
+        console.log(this.state.imageurl)
+       
         e.preventDefault()
-        
+        storage.child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
+            console.log('Uploaded a blob or file!');
+        });
         let id =0;
         let post_id = String(id)
         const user = firebase.auth().currentUser
@@ -63,7 +80,7 @@ class Post extends React.Component {
                     db.collection("posts").doc().set({
                         post_id : db.collection("posts").doc(),
                         name: userdb.data().name,
-                        pic: userdb.data().photoURL || '/images/profile_placeholder.png',
+                        pic: userdb.data().pic,
                         email: userdb.data().email,
                         course: userdb.data().course,
                         nickname: userdb.data().nickname,
@@ -72,7 +89,8 @@ class Post extends React.Component {
                         favcount: 0,
                         librarycount: 0,
                         timestamp: new Date(),
-                        answered:this.state.answered
+                        answered:this.state.answered,
+                        postpicname:this.state.file.name
 
                     })
                 
@@ -80,7 +98,7 @@ class Post extends React.Component {
                             this.setState({
                                 post_id : db.collection("posts").doc(),
                                 name: userdb.data().name,
-                                pic: userdb.data().photoURL || '/images/profile_placeholder.png',
+                                pic: userdb.data().pic,
                                 email: userdb.data().email,
                                 course: userdb.data().course,
                                 nickname: userdb.data().nickname,
@@ -92,7 +110,7 @@ class Post extends React.Component {
                                 index : true
                             })
                             console.log(`追加に成功しました `);
-                            
+                            this.props.changepost()
                         })
                         .catch((error) => {
                             console.log(`追加に失敗しました (${error})`);
@@ -112,34 +130,12 @@ class Post extends React.Component {
 
 
     render() {
-       
+       console.log(this.props.user)
         return (
             
          
                 <div>
-                    <header>
-
-                        {this.props.user ?
-                            (
-                                <div className="header-content">
-                                    <ul className="header-list">
-
-                                    </ul>
-
-                                </div>
-                            )
-                            :
-                            (
-                                <div className="header-content">
-
-
-                                </div>
-
-
-
-
-                            )}
-                    </header>
+   
                     <div className="main">
                         <div className="App">
                             <p className="App-intro">
@@ -154,21 +150,22 @@ class Post extends React.Component {
                               
                                 <form>
                                     <div className="posttitle">タイトルを入力:
-                    <input type='text' value={this.state.title} onChange={this.handleInputtitle.bind(this)} />
+                                        <input type='text' value={this.state.title} onChange={this.handleInputtitle.bind(this)} />
                                     </div>
                                     <div className="postbody">投稿内容を入力:
-                    <input type='text' value={this.state.body} onChange={this.handleInputbody.bind(this)} />
+                                        <input type='text' value={this.state.body} onChange={this.handleInputbody.bind(this)} />
                                     </div>
-                                    <div class="file-field input-field">
-                                    <div class="btn">
-                                        <span>File</span>
-                                        <input type="file"/>
+                                    <div className="file-field input-field">
+                                        <div className="btn">
+                                            <span>File</span>
+                                            <input type="file"onChange={this.handleFileSelect.bind(this)} />
+                                        </div>
+                                        <div className="file-path-wrapper">
+                                            <input className="file-path validate" type="text"/>
+                                        </div>
+                                        <img src = {this.state.imageurl}/>
                                     </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text"/>
-                                    </div>
-                                    </div>
-    
+                                    
 
                                     {this.state.title == ''?
                                         (
@@ -187,7 +184,7 @@ class Post extends React.Component {
 
 
                                 </form>
-                                <li className="gline-logout" onClick={this.logout}><Link to='/'>ログアウト</Link></li>
+                               
                             </div>
                         ) : (
                                 <div></div>
