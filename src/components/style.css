@@ -10,11 +10,22 @@ form, input, div ,button{
 }
 
 .login-header{
-    line-height: 68px;
+    line-height: 80px;
+    font-size: 30px;
+    position: relative;
 }
 
+.login-header p{
+    font-size: 20px;
+}
 
 .logo-gline{
     display: inline-block;
-    font-size: 2.5rem;
+    font-size: 4.5rem;
+}
+
+.container-landingPage{
+  height: 900px;
+  background-image: url('./img/landing-background.JPG');
+  background-size: cover;
 }

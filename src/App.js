@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from "./components/login";
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-import LandingPage from './components/landingPage'
-import Post from './components/post'
-import Library from './components/library'
-import Answer from './components/answer'
-import MyPage from './components/mypage'
+import LandingPage from './components/LandingPage'
+import Login from "./components/Login";
+import Post from './components/Post'
+import Library from './components/Library'
+import Answer from './components/Answer'
+import MyPage from './components/MyPage'
 import './bower_components/materialize/dist/css/materialize.css'
 
 class App extends React.Component{
