@@ -32,6 +32,7 @@ class Index extends React.Component{
         firebase.auth().onAuthStateChanged(user => {
             this.setState({ user })
           })
+
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
         postsref.get().then((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
@@ -73,7 +74,9 @@ class Index extends React.Component{
     }
 
     post = () =>{
-       
+            this.setState({
+        postpage:false
+    })
             this.setState({
                 postpage : true
             })  
@@ -100,7 +103,7 @@ class Index extends React.Component{
                                 {post.nickname}
                                 {post.favcount}
                                 {post.librarycount}
-                                {post.timestamp.toString()}
+                                {/* {post.timestamp.toString()} */}
                             </div>
                         )
 
@@ -120,7 +123,7 @@ class Index extends React.Component{
                 )
                 :
                 (
-                    <button onClick={this.post}>投稿する</button>
+                    <button  onClick={this.post}>投稿する</button>
                 )
             )   
             :
