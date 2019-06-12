@@ -1,7 +1,7 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
-import Post from "./post"
+import Post from "./Post"
 import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
@@ -32,11 +32,14 @@ class Index extends React.Component{
         firebase.auth().onAuthStateChanged(user => {
             this.setState({ user })
           })
+
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
         postsref.get().then((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                  const post = postdoc.data();
+                 console.log(post);
+                 
                  const pathref = storage.ref(`images/${post.postpicname}`)
                  pathref.getDownloadURL().then((url)=>{
                      this.setState({
@@ -71,7 +74,9 @@ class Index extends React.Component{
     }
 
     post = () =>{
-       
+            this.setState({
+        postpage:false
+    })
             this.setState({
                 postpage : true
             })  
@@ -98,7 +103,7 @@ class Index extends React.Component{
                                 {post.nickname}
                                 {post.favcount}
                                 {post.librarycount}
-                                {post.timestamp.toString()}
+                                {/* {post.timestamp.toString()} */}
                             </div>
                         )
 
@@ -118,7 +123,7 @@ class Index extends React.Component{
                 )
                 :
                 (
-                    <button onClick={this.post}>投稿する</button>
+                    <button  onClick={this.post}>投稿する</button>
                 )
             )   
             :

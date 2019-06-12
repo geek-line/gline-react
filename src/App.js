@@ -1,16 +1,16 @@
 import React from 'react';
-import Login from "./components/login";
-import { BrowserRouter, Route, browserHistory ,Switch} from 'react-router-dom'
-import LandingPage from './components/landingPage'
-import LoginHeader from './components/items/login-header'
-import Post from './components/post'
-import Library from './components/library'
-import Answer from './components/answer'
-import MyPage from './components/mypage'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
+import LandingPage from './components/LandingPage.js'
+import Login from "./components/Login";
+import Post from './components/Post'
+import Library from './components/Library'
+import Answer from './components/Answer'
+import MyPage from './components/Mypage'
 import './bower_components/materialize/dist/css/materialize.css'
 import firebase from './firebase'
-import Index from './components/index'
+import Index from './components/Index'
 import { db } from './firebase'
+import LoginHeader from './components/items/Login-header.js'
 
 
 class App extends React.Component{
@@ -54,6 +54,11 @@ class App extends React.Component{
 
 
   componentWillMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.setState({ user })
+    })
+  }
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ user })
     })

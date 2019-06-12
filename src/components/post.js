@@ -64,11 +64,13 @@ class Post extends React.Component {
     save = (e) => {
 
         console.log(this.state.imageurl)
-       
-        e.preventDefault()
-        storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
-            console.log('Uploaded a blob or file!');
-        });
+        console.log(this.state.file)
+       if(this.state.file!=null){
+            e.preventDefault()
+            storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
+                console.log('Uploaded a blob or file!');
+            });
+        }
         let id =0;
         let post_id = String(id)
         const user = firebase.auth().currentUser
@@ -173,7 +175,7 @@ class Post extends React.Component {
                                         ) : (
                                              this.state.body != ''?
                                                 (
-                                                    <button onClick={this.save}><Link to='/index'>質問を投稿する</Link></button>
+                                                    <button onClick={this.save}  ><Link to='/index'>質問を投稿する</Link></button>
 
                                                 ) : (
                                                     <div>投稿内容を入力してください</div>
