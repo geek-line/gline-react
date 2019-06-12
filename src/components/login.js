@@ -1,10 +1,14 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
+
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { db } from '../firebase'
 import firebase from '../firebase'
-import Index from './index'
+import Index from './Index'
 import PropTypes from 'prop-types';
+
+import "./style.css"
+import LoginHeader from './items/Login-header'
 
 
 

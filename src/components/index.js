@@ -1,7 +1,7 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
-import Post from "./post"
+import Post from "./Post"
 import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
@@ -37,6 +37,8 @@ class Index extends React.Component{
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                  const post = postdoc.data();
+                 console.log(post);
+                 
                  const pathref = storage.ref(`images/${post.postpicname}`)
                  pathref.getDownloadURL().then((url)=>{
                      this.setState({
@@ -92,7 +94,7 @@ class Index extends React.Component{
                                 {post.title}
                                 {post.body}
                                 {post.name}
-                                <img src={this.state.pictureurl}></img> 
+                                {post.pictureurl}
                                
                                 {post.course}
                                 {post.nickname}

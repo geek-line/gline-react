@@ -50,7 +50,7 @@ class Post extends React.Component {
         reader.addEventListener("load",()=>{
             this.setState({
                 imageurl: reader.result,
-                file
+                file: file
             })
 
         })
@@ -66,9 +66,12 @@ class Post extends React.Component {
         console.log(this.state.imageurl)
        
         e.preventDefault()
-        storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
-            console.log('Uploaded a blob or file!');
-        });
+        if(this.state.file!=null){
+                storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
+                    console.log('Uploaded a blob or file!');
+            })
+        }
+
         let id =0;
         let post_id = String(id)
         const user = firebase.auth().currentUser
@@ -92,29 +95,28 @@ class Post extends React.Component {
                         answered:this.state.answered,
                         postpicname:this.state.file.name
 
+                    })        
+                    .then(() => {
+                        // this.setState({
+                        //     post_id : db.collection("posts").doc(),
+                        //     name: userdb.data().name,
+                        //     pic: userdb.data().pic,
+                        //     email: userdb.data().email,
+                        //     course: userdb.data().course,
+                        //     nickname: userdb.data().nickname,
+                        //     body: this.state.body,
+                        //     title: this.state.title,
+                        //     favcount: 0,
+                        //     librarycount: 0,
+                        //     timestamp: new Date(),
+                        //     index : true
+                        // })
+                        console.log(`追加に成功しました `);
+                        this.props.changepost()
                     })
-                
-                        .then(() => {
-                            this.setState({
-                                post_id : db.collection("posts").doc(),
-                                name: userdb.data().name,
-                                pic: userdb.data().pic,
-                                email: userdb.data().email,
-                                course: userdb.data().course,
-                                nickname: userdb.data().nickname,
-                                body: this.state.body,
-                                title: this.state.title,
-                                favcount: 0,
-                                librarycount: 0,
-                                timestamp: new Date(),
-                                index : true
-                            })
-                            console.log(`追加に成功しました `);
-                            this.props.changepost()
-                        })
-                        .catch((error) => {
-                            console.log(`追加に失敗しました (${error})`);
-                        });
+                    .catch((error) => {
+                        console.log(`追加に失敗しました (${error})`);
+                    });
                     
             } else {
                 // doc.data() will be undefined in this case
@@ -122,12 +124,13 @@ class Post extends React.Component {
             }
                     
         })
-            .catch(function(error){
-            console.log(`取得失敗 (${error})`);
-             
+        .catch(function(error){
+        console.log(`取得失敗 (${error})`);
             });
     }
-
+         
+       
+   
 
     render() {
        console.log(this.props.user)
