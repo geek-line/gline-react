@@ -25,22 +25,21 @@ class Index extends React.Component{
         postpage:false
     })
     }
-
     componentDidMount(){
-
-        
+     
+       
         firebase.auth().onAuthStateChanged(user => {
             this.setState({ user })
           })
 
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
-        postsref.get().then((snapshot) => {
+        postsref.limit(20).onSnapshot((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                  const post = postdoc.data();
-                 console.log(post);
+                //  console.log(post);
                  
-                 const pathref = storage.ref(`images/${post.postpicname}`)
+                 const pathref = storage.ref().child(`images/${post.postpicname}`)
                  pathref.getDownloadURL().then((url)=>{
                      this.setState({
                         pictureurl:url
@@ -68,11 +67,14 @@ class Index extends React.Component{
             })
            
         });
+        
+       
 
 
-
+    
     }
 
+   
     post = () =>{
             this.setState({
         postpage:false
@@ -86,7 +88,7 @@ class Index extends React.Component{
    
 
     render(){
-        console.log(this.state.user)
+        
         return(
             <div>
 

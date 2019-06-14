@@ -79,44 +79,86 @@ class Post extends React.Component {
             if (userdb.exists) {
                 console.log("Document data:", userdb.data());
             
-                    db.collection("posts").doc().set({
-                        post_id : db.collection("posts").doc(),
-                        name: userdb.data().name,
-                        pic: userdb.data().pic,
-                        email: userdb.data().email,
-                        course: userdb.data().course,
-                        nickname: userdb.data().nickname,
-                        body: this.state.body,
-                        title: this.state.title,
-                        favcount: 0,
-                        librarycount: 0,
-                        timestamp: new Date(),
-                        answered:this.state.answered,
-                        postpicname:this.state.file.name
+                    if(this.state.file==null){
+                        db.collection("posts").doc().set({
+                            post_id : db.collection("posts").doc(),
+                            name: userdb.data().name,
+                            pic: userdb.data().pic,
+                            email: userdb.data().email,
+                            course: userdb.data().course,
+                            nickname: userdb.data().nickname,
+                            body: this.state.body,
+                            title: this.state.title,
+                            favcount: 0,
+                            librarycount: 0,
+                            timestamp: new Date(),
+                            answered:this.state.answered,
+                            postpicname:""
 
-                    })        
-                    .then(() => {
-                        // this.setState({
-                        //     post_id : db.collection("posts").doc(),
-                        //     name: userdb.data().name,
-                        //     pic: userdb.data().pic,
-                        //     email: userdb.data().email,
-                        //     course: userdb.data().course,
-                        //     nickname: userdb.data().nickname,
-                        //     body: this.state.body,
-                        //     title: this.state.title,
-                        //     favcount: 0,
-                        //     librarycount: 0,
-                        //     timestamp: new Date(),
-                        //     index : true
-                        // })
-                        console.log(`追加に成功しました `);
-                        this.props.changepost()
-                    })
-                    .catch((error) => {
-                        console.log(`追加に失敗しました (${error})`);
-                    });
-                    
+                        })        
+                        .then(() => {
+                            this.setState({
+                                post_id : db.collection("posts").doc(),
+                                name: userdb.data().name,
+                                pic: userdb.data().pic,
+                                email: userdb.data().email,
+                                course: userdb.data().course,
+                                nickname: userdb.data().nickname,
+                                body: this.state.body,
+                                title: this.state.title,
+                                favcount: 0,
+                                librarycount: 0,
+                                timestamp: new Date(),
+                                index : true
+                            })
+                            console.log(`追加に成功しました `);
+                            this.props.changepost()
+                        })
+                        .catch((error) => {
+                            console.log(`追加に失敗しました (${error})`);
+                        });
+                    }else{
+                        db.collection("posts").doc().set({
+                            post_id : db.collection("posts").doc(),
+                            name: userdb.data().name,
+                            pic: userdb.data().pic,
+                            email: userdb.data().email,
+                            course: userdb.data().course,
+                            nickname: userdb.data().nickname,
+                            body: this.state.body,
+                            title: this.state.title,
+                            favcount: 0,
+                            librarycount: 0,
+                            timestamp: new Date(),
+                            answered:this.state.answered,
+                            postpicname:this.state.file.name
+
+                        })        
+                        .then(() => {
+                            // this.setState({
+                            //     post_id : db.collection("posts").doc(),
+                            //     name: userdb.data().name,
+                            //     pic: userdb.data().pic,
+                            //     email: userdb.data().email,
+                            //     course: userdb.data().course,
+                            //     nickname: userdb.data().nickname,
+                            //     body: this.state.body,
+                            //     title: this.state.title,
+                            //     favcount: 0,
+                            //     librarycount: 0,
+                            //     timestamp: new Date(),
+                            //     index : true
+                            // })
+                            console.log(`追加に成功しました `);
+                            this.props.changepost()
+                        })
+                        .catch((error) => {
+                            console.log(`追加に失敗しました (${error})`);
+                        });
+
+
+
+                    }
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -132,7 +174,7 @@ class Post extends React.Component {
    
 
     render() {
-       console.log(this.props.user)
+      
         return (
             
          
