@@ -41,7 +41,7 @@ class Index extends React.Component{
 
                         this.setState((state)=>{
                             const index =  state.posts.findIndex((post)=>{
-                                return post.uid === postdoc.uid;
+                                return post.id === postdoc.id;
                             })
                             state.posts[index].postimageurl.push(url)
 
@@ -53,7 +53,8 @@ class Index extends React.Component{
 
                     
                 }
-                return {...post,uid:postdoc.uid}
+                console.log(postdoc)
+                return {...post,id:postdoc.id}
                 
                
             })
@@ -93,9 +94,9 @@ class Index extends React.Component{
                       
                         return ( 
                             <div key={i}>
-                                {post.title}
-                                {post.body}
                                 
+                                {post.body}
+                                <Link to={post.id}> {post.title}</Link>
                                 {post.postimageurl&&
                                     post.postimageurl.map((imageurl,j)=>{
                                         return (
@@ -110,10 +111,13 @@ class Index extends React.Component{
                                 {post.favcount}
                                 {post.librarycount}
                                 {/* {post.timestamp.toString()} */}
+                                <Route  path='/detail' render={() => <Login user={this.props.user} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
                             </div>
+
                         )
 
                     })
+                   
                 )   
                 :
                 (
