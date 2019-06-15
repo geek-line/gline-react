@@ -22,9 +22,10 @@ class Index extends React.Component{
         postpage:false
     })
     }
-    componentDidMount(){
-     
-       
+
+    componentWillMount(){
+
+        
         firebase.auth().onAuthStateChanged(user => {
             this.setState({ user })
           })
@@ -81,7 +82,11 @@ class Index extends React.Component{
       
     }
 
-   
+   detail =(post)=>{
+       this.setState({
+           detail:post
+    })
+    }
 
     render(){
         
@@ -93,7 +98,7 @@ class Index extends React.Component{
                       
                         return ( 
                             <div key={i}>
-                                {post.title}
+                                <Link to={post.id} onclick ={this.detail(post)}>{post.title}</Link>
                                 {post.body}
                                 
                                 {post.postimageurl&&
@@ -137,7 +142,13 @@ class Index extends React.Component{
                 <div></div>
             )
             }
+            <BrowserRouter>
+            
+                <div>
+                    <Route  path='/posts/:id' render={()=><Detail   user ={this.props.user} post={this.state.detail}/>}/>
+                </div>
                 
+            </BrowserRouter> 
             </div>
         );
     }
