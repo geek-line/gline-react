@@ -29,3 +29,8 @@ form, input, div ,button{
   background-image: url('./img/landing-background.JPG');
   background-size: cover;
 }
+
+img{
+  height:70px;
+  width:70px;
+}

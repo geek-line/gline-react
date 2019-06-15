@@ -14,9 +14,6 @@ class Index extends React.Component{
             posts:[],
             postpage:false,
             user:null,
-            pictureurl:""
-
-
         }
     }
 
@@ -36,29 +33,28 @@ class Index extends React.Component{
         postsref.limit(20).onSnapshot((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
                 
-                 const post = postdoc.data();
-                //  console.log(post);
-                 
-                 const pathref = storage.ref().child(`images/${post.postpicname}`)
-                 pathref.getDownloadURL().then((url)=>{
-                     this.setState({
-                        pictureurl:url
-                     })
-                 }
-                 )
+                const post = postdoc.data();
+                    //  console.log(post);
+                if(post.postimageurl!=[]){
+                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
+                    pathref.getDownloadURL().then((url)=>{ 
 
-                return {
-                    title:post.title,
-                    body:post.body,
-                    name:post.name,
-                    pic:post.pic,
-                    course:post.course,
-                    nickname: post.nickname,
-                    favcount: post.favcount,
-                    librarycount: post.librarycount,
-                    timestamp: post.timestamp,
-                    postpicname: post.postpicname
-                }   
+                        this.setState((state)=>{
+                            const index =  state.posts.findIndex((post)=>{
+                                return post.uid === postdoc.uid;
+                            })
+                            state.posts[index].postimageurl.push(url)
+
+
+                            
+                            return state
+                        })
+                    })
+
+                    
+                }
+                return {...post,uid:postdoc.uid}
+                
                
             })
             this.setState({
@@ -94,13 +90,21 @@ class Index extends React.Component{
 
                 {this.props.user?(
                      this.state.posts.map((post, i) => { 
+                      
                         return ( 
                             <div key={i}>
                                 {post.title}
                                 {post.body}
-                                {post.name}
-                                {post.pictureurl}
-                               
+                                
+                                {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
+                                        return (
+                                        <div key={j}>
+                                        <img src={imageurl} className="post-image"></img>
+                                        </div>
+                                        )
+                                    })
+                                }
                                 {post.course}
                                 {post.nickname}
                                 {post.favcount}

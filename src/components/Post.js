@@ -17,8 +17,8 @@ class Post extends React.Component {
             librarycount: 0,
             answered:false,
             timestamp:null,
-            file:null,
-            imageurl:""
+            files:[],
+            postimageurls:[]
             
 
         }
@@ -44,33 +44,39 @@ class Post extends React.Component {
     }
 
     handleFileSelect = (e) => {
-        const file = e.target.files[0]
+        const files = e.target.files
+        Array.prototype.forEach.call(files,(file) => {
+            const reader = new FileReader()
+            reader.addEventListener("load",()=>{
+                this.setState((state)=>{
+                    state.postimageurls.push(reader.result)
+                    state.files.push(file)
+                    return state
+                })
 
-        const reader = new FileReader()
-        reader.addEventListener("load",()=>{
-            this.setState({
-                imageurl: reader.result,
-                file: file
-            })
-
-        })
-        if(file){
-            reader.readAsDataURL(file)
-        }
+             })
+            if(file){
+                reader.readAsDataURL(file)
+            }
+        });
+        
     }
 
     
 
     save = (e) => {
 
-        console.log(this.state.imageurl)
-        console.log(this.state.file)
-       if(this.state.file!=null){
+        
+
+       if(this.state.files!=[]){
             e.preventDefault()
-            storage.ref().child(`images/${this.state.file.name}`).put(this.state.file).then(snap => {
-                console.log('Uploaded a blob or file!');
-            });
-        }
+            this.state.files.forEach((file)=>{
+               
+                storage.ref().child(`images/${file.name}`).put(file).then(snap => {
+                    console.log('Uploaded a blob or file!');
+                });
+            })
+        }   
         let id =0;
         let post_id = String(id)
         const user = firebase.auth().currentUser
@@ -79,7 +85,7 @@ class Post extends React.Component {
             if (userdb.exists) {
                 console.log("Document data:", userdb.data());
             
-                    if(this.state.file==null){
+                    if(this.state.files==null){
                         db.collection("posts").doc().set({
                             post_id : db.collection("posts").doc(),
                             name: userdb.data().name,
@@ -93,7 +99,7 @@ class Post extends React.Component {
                             librarycount: 0,
                             timestamp: new Date(),
                             answered:this.state.answered,
-                            postpicname:""
+                            postimageurl:[]
 
                         })        
                         .then(() => {
@@ -131,7 +137,7 @@ class Post extends React.Component {
                             librarycount: 0,
                             timestamp: new Date(),
                             answered:this.state.answered,
-                            postpicname:this.state.file.name
+                            postimageurl:this.state.postimageurls
 
                         })        
                         .then(() => {
@@ -202,12 +208,20 @@ class Post extends React.Component {
                                     <div className="file-field input-field">
                                         <div className="btn">
                                             <span>File</span>
-                                            <input type="file"onChange={this.handleFileSelect.bind(this)} />
+                                            <input type="file" onChange={this.handleFileSelect.bind(this)} multiple />
                                         </div>
                                         <div className="file-path-wrapper">
                                             <input className="file-path validate" type="text"/>
                                         </div>
-                                        <img src = {this.state.imageurl}/>
+                                        {
+                                            this.state.postimageurls.map((imageurl,i)=>{
+                                                return (
+                                                <div key={i}>
+                                                    <img src={imageurl}></img>
+                                                </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                     
 
