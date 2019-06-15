@@ -14,6 +14,10 @@ class Index extends React.Component{
             posts:[],
             postpage:false,
             user:null,
+            pictureurl:""
+            detail:[]
+
+
         }
     }
 
