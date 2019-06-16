@@ -4,7 +4,7 @@ import LandingPage from './components/LandingPage.js'
 import Login from "./components/Login";
 import Post from './components/Post'
 import Library from './components/Library'
-import Answer from './components/Answer'
+
 import MyPage from './components/Mypage'
 import Posts from './components/Posts'
 import './bower_components/materialize/dist/css/materialize.css'
@@ -99,7 +99,6 @@ class App extends React.Component{
           <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
           <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
           <Route  path='/library' component={Library}/>
-          <Route  path='/answer' component={Answer} />
           <Route  path='/mypage' component={MyPage}/>
         
         </div>
