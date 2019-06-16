@@ -6,6 +6,7 @@ import Post from './components/Post'
 import Library from './components/Library'
 import Answer from './components/Answer'
 import MyPage from './components/Mypage'
+import Posts from './components/Posts'
 import './bower_components/materialize/dist/css/materialize.css'
 import firebase from './firebase'
 import Index from './components/Index'
@@ -83,6 +84,7 @@ class App extends React.Component{
   }
 
    render(){
+     
     return(
       <div>
         
@@ -95,9 +97,8 @@ class App extends React.Component{
           <Route exact path='/' render={()=> <LandingPage login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>}/>
           <Route  path='/login' render={() => <Login save={this.save} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
           <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
+          <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
           <Route  path='/library' component={Library}/>
-          <Route  exact path='/posts' render={()=><Index  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
-          <Route  path='/posts/:id' render={()=><Detail  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
           <Route  path='/answer' component={Answer} />
           <Route  path='/mypage' component={MyPage}/>
         
