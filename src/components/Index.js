@@ -6,6 +6,8 @@ import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
+import Detail from "./Detail"
+
 
 class Index extends React.Component{
     constructor(props){
@@ -14,11 +16,12 @@ class Index extends React.Component{
             posts:[],
             postpage:false,
             user:null,
-            pictureurl:""
+            pictureurl:"",
             detail:[]
 
 
         }
+        this.detail= this.detail.bind(this);
     }
 
     changepost=()=>{
@@ -27,7 +30,7 @@ class Index extends React.Component{
     })
     }
 
-    componentWillMount(){
+    componentDidMount(){
 
         
         firebase.auth().onAuthStateChanged(user => {
@@ -46,7 +49,7 @@ class Index extends React.Component{
 
                         this.setState((state)=>{
                             const index =  state.posts.findIndex((post)=>{
-                                return post.uid === postdoc.uid;
+                                return post.id === postdoc.id;
                             })
                             state.posts[index].postimageurl.push(url)
 
@@ -58,7 +61,7 @@ class Index extends React.Component{
 
                     
                 }
-                return {...post,uid:postdoc.uid}
+                return {...post,id:postdoc.id}
                 
                
             })
@@ -69,40 +72,42 @@ class Index extends React.Component{
            
         });
         
-       
-
-
     
     }
 
    
     post = () =>{
-            this.setState({
-        postpage:false
-    })
-            this.setState({
-                postpage : true
-            })  
-      
+        if(this.state.postpage==true){
+        this.setState({
+            postpage:false
+        })
+         }else{
+        this.setState({
+            postpage : true
+        })  
+    }
     }
 
-   detail =(post)=>{
-       this.setState({
-           detail:post
-    })
-    }
+    detail = (post,post_id)=>{
+        
+       console.log(post.id)
+    
+         
+     }
 
     render(){
-        
+        console.log(this.state)
         return(
             <div>
 
-                {this.props.user?(
-                     this.state.posts.map((post, i) => { 
-                      
-                        return ( 
-                            <div key={i}>
-                                <Link to={post.id} onclick ={this.detail(post)}>{post.title}</Link>
+                {this.props.user&&
+                this.state.postpage==false&&
+                     this.state.posts.map((post) => { 
+                        console.log(post)
+                        
+                      return(
+                            <div>
+                                <Link to={"/posts"} onclick ={this.detail(post,post.id)}>{post.title}</Link>
                                 {post.body}
                                 
                                 {post.postimageurl&&
@@ -120,16 +125,13 @@ class Index extends React.Component{
                                 {post.librarycount}
                                 {/* {post.timestamp.toString()} */}
                             </div>
-                        )
-
-                    })
-                )   
-                :
-                (
-                    <div></div>
-                )
+                     
+                      )
+                            })
+                    
+               
                 }
-            {this.props.user?(
+            {this.props.user&&
                 this.state.postpage?(
                     <div>
                     <div><Post user = {this.state.user} postpage={this.state.postpage} changepost={this.changepost}/></div>
@@ -138,18 +140,15 @@ class Index extends React.Component{
                 )
                 :
                 (
-                    <button  onClick={this.post}>投稿する</button>
+                    <a class="btn-floating btn-large waves-effect waves-light red"onClick={this.post}><i class="material-icons">add</i></a>
+                    
                 )
-            )   
-            :
-            (
-                <div></div>
-            )
+           
             }
             <BrowserRouter>
             
                 <div>
-                    <Route  path='/posts/:id' render={()=><Detail   user ={this.props.user} post={this.state.detail}/>}/>
+                    <Route  path='/posts/:id' render={()=><Detail  user ={this.props.user} detail={this.state.detail}/>}/>
                 </div>
                 
             </BrowserRouter> 

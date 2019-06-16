@@ -11,6 +11,7 @@ import firebase from './firebase'
 import Index from './components/Index'
 import { db } from './firebase'
 import LoginHeader from './components/items/Login-header.js'
+import Detail from './components/Detail'
 
 
 class App extends React.Component{

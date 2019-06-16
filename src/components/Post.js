@@ -231,7 +231,7 @@ class Post extends React.Component {
                                         ) : (
                                              this.state.body != ''?
                                                 (
-                                                    <button onClick={this.save}  ><Link to='/index'>質問を投稿する</Link></button>
+                                                    <button onClick={this.save}  ><Link to='/posts'>質問を投稿する</Link></button>
 
                                                 ) : (
                                                     <div>投稿内容を入力してください</div>
