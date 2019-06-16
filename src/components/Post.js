@@ -72,7 +72,7 @@ class Post extends React.Component {
             e.preventDefault()
             this.state.files.forEach((file)=>{
                
-                storage.ref().child(`images/${file.name}`).put(file).then(snap => {
+                storage.ref().child(`${file.name}`).put(file).then(snap => {
                     console.log('Uploaded a blob or file!');
                 });
             })
@@ -233,7 +233,7 @@ class Post extends React.Component {
                                         ) : (
                                              this.state.body != ''?
                                                 (
-                                                    <button onClick={this.save}  ><Link to='/posts'>質問を投稿する</Link></button>
+                                                    <button onClick={this.save}  ><Link to='/posts/index'>質問を投稿する</Link></button>
 
                                                 ) : (
                                                     <div>投稿内容を入力してください</div>
