@@ -6,21 +6,38 @@ import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
-import Posts from "./Posts";
-import Response from "./Response"
+import Detail from "./Detail"
+import Index from "./Index"
 
-class Detail extends React.Component{
+
+
+class Posts extends React.Component{
     constructor(props){
         super(props)
         this.state={
-           post:[],
+            posts:[],
+            postpage:false,
+            user:null,
+            pictureurl:"",
+            detail:[]
+
+
         }
+        
     }
 
-  
-    componentWillMount(){
+    changepost=()=>{
+        this.setState({
+        postpage:false
+    })
+    }
+
+    componentDidMount(){
 
         
+        firebase.auth().onAuthStateChanged(user => {
+            this.setState({ user })
+          })
 
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
         postsref.limit(20).onSnapshot((snapshot) => {
@@ -50,48 +67,50 @@ class Detail extends React.Component{
                 
                
             })
-            console.log(posts)
-            const uid =this.props.match.params.id
-            const post= posts.find((posts) => {return (posts.id === uid);})
             this.setState({
-                post:post
+                posts : posts,
+                
             })
            
         });
-       
+        
     
     }
+
    
+    post = () =>{
+        if(this.state.postpage==true){
+        this.setState({
+            postpage:false
+        })
+         }else{
+        this.setState({
+            postpage : true
+        })  
+    }
+    }
+
 
     render(){
-        
+       console.log(this.props.user)
         return(
             <div>
 
                 {this.props.user&&
-                     
-                    
-                           <div>
-                                {this.state.post.title}
-                                {this.state.post.body}
-                                {this.state.post.name}
-                                {this.state.post.pictureurl}
-                               
-                                {this.state.post.course}
-                                {this.state.post.nickname}
-                                {this.state.post.favcount}
-                                {this.state.post.librarycount}
-                               
-                            </div> 
-                         
-                           
-                   
+                <div>
+
+                 <Route  exact path='/posts/index' render={()=><Index post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  path='/posts/index/:id' render={(props)=><Detail match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 
+                </div>
                 }
-            
-            <Response match={this.props.match}/>
+           
+               
+                
             </div>
-        )
+        );
     }
+    
 }
 
-export default Detail
+export default Posts
