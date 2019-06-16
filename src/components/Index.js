@@ -6,6 +6,8 @@ import { db } from '../firebase'
 import firebase from '../firebase'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
+import Detail from "./Detail"
+
 
 class Index extends React.Component{
     constructor(props){
@@ -14,86 +16,34 @@ class Index extends React.Component{
             posts:[],
             postpage:false,
             user:null,
+            pictureurl:"",
+            detail:[]
+
+
         }
-    }
-
-    changepost=()=>{
-        this.setState({
-        postpage:false
-    })
-    }
-    componentDidMount(){
-     
-       
-        firebase.auth().onAuthStateChanged(user => {
-            this.setState({ user })
-          })
-
-        const postsref = db.collection("posts").orderBy('timestamp', 'desc')
-        postsref.limit(20).onSnapshot((snapshot) => {
-            const posts = snapshot.docs.map( (postdoc) =>{
-                
-                const post = postdoc.data();
-                    //  console.log(post);
-                if(post.postimageurl!=[]){
-                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
-                    pathref.getDownloadURL().then((url)=>{ 
-
-                        this.setState((state)=>{
-                            const index =  state.posts.findIndex((post)=>{
-                                return post.uid === postdoc.uid;
-                            })
-                            state.posts[index].postimageurl.push(url)
-
-
-                            
-                            return state
-                        })
-                    })
-
-                    
-                }
-                return {...post,uid:postdoc.uid}
-                
-               
-            })
-            this.setState({
-                posts : posts,
-                
-            })
-           
-        });
         
-       
-
-
-    
     }
 
    
-    post = () =>{
-            this.setState({
-        postpage:false
-    })
-            this.setState({
-                postpage : true
-            })  
-      
-    }
 
    
+
+   
+ 
 
     render(){
-        
+       
         return(
             <div>
 
-                {this.props.user?(
-                     this.state.posts.map((post, i) => { 
-                      
-                        return ( 
+                {this.props.user&&
+                this.props.postpage==false&&
+                     this.props.posts.map((post,i) => { 
+                       
+                        
+                      return(
                             <div key={i}>
-                                {post.title}
+                                <Link to={`/posts/index/${post.id}`}>{post.title}</Link>
                                 {post.body}
                                 
                                 {post.postimageurl&&
@@ -111,32 +61,27 @@ class Index extends React.Component{
                                 {post.librarycount}
                                 {/* {post.timestamp.toString()} */}
                             </div>
-                        )
-
-                    })
-                )   
-                :
-                (
-                    <div></div>
-                )
+                     
+                      )
+                            })
+                    
+               
                 }
-            {this.props.user?(
-                this.state.postpage?(
+            {this.props.user&&
+                this.props.postpage?(
                     <div>
-                    <div><Post user = {this.state.user} postpage={this.state.postpage} changepost={this.changepost}/></div>
-                    <button onClick={this.changepost}>投稿をやめる</button>
+                    <div><Post user = {this.props.user} postpage={this.props.postpage} changepost={this.props.changepost}/></div>
+                    <button onClick={this.props.changepost}>投稿をやめる</button>
                     </div>
                 )
                 :
                 (
-                    <button  onClick={this.post}>投稿する</button>
+                    <a class="btn-floating btn-large waves-effect waves-light red"onClick={this.props.post}><i class="material-icons">add</i></a>
+                    
                 )
-            )   
-            :
-            (
-                <div></div>
-            )
+                
             }
+               
                 
             </div>
         );

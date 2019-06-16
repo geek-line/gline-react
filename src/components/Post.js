@@ -195,10 +195,12 @@ class Post extends React.Component {
 
                         </div>
                         
-                        {this.props.user ? (
+                        {this.props.user&&
                             <div>
-                              
+                              <h4>質問を投稿</h4>
+                             
                                 <form>
+                                    
                                     <div className="posttitle">タイトルを入力:
                                         <input type='text' value={this.state.title} onChange={this.handleInputtitle.bind(this)} />
                                     </div>
@@ -231,7 +233,7 @@ class Post extends React.Component {
                                         ) : (
                                              this.state.body != ''?
                                                 (
-                                                    <button onClick={this.save}  ><Link to='/index'>質問を投稿する</Link></button>
+                                                    <button onClick={this.save}  ><Link to='/posts'>質問を投稿する</Link></button>
 
                                                 ) : (
                                                     <div>投稿内容を入力してください</div>
@@ -244,9 +246,7 @@ class Post extends React.Component {
                                 </form>
                                
                             </div>
-                        ) : (
-                                <div></div>
-                            )
+                        
                            
                         }
                         
