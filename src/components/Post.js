@@ -198,7 +198,7 @@ class Post extends React.Component {
                         
                         {this.props.user&&
                             <div>
-                              <h4>質問を投稿</h4>
+                              <h3 className='center'>質問を投稿</h3>
                              
                                 <form>
                                     

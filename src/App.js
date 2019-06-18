@@ -16,6 +16,7 @@ import LoginHeader from './components/items/Login-header.js'
 import Detail from './components/Detail'
 
 
+
 class App extends React.Component{
   constructor(){
     super()
