@@ -56,15 +56,16 @@ class Detail extends React.Component{
             const uid =this.props.match.params.id
             const post= posts.find((posts) => {return (posts.id === uid);})
             const user = firebase.auth().currentUser
-            if(user.email==post.email){
+            if(user){
+                if(user.email==post.email){
+                    this.setState({
+                    answerdisplay:true
+                    })
+                }
                 this.setState({
-                answerdisplay:true
+                    post:post
                 })
             }
-            this.setState({
-                post:post
-            })
-           
         });
        
        
