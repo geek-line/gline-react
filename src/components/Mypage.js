@@ -1,177 +1,146 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
-
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import "./style.css";
+import Post from "./Post"
 import { db } from '../firebase'
 import firebase from '../firebase'
-import Index from './Index'
-import PropTypes from 'prop-types';
-
-import "./style.css"
-import LoginHeader from './items/Login-header'
-
+import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { storage } from '../firebase'
+import Posts from "./Posts";
+import Response from "./Response"
 
 
-class Login extends React.Component {
-    constructor(props) {
+class Mypage extends React.Component{
+    constructor(props){
         super(props)
-        this.state = {
-
-            course: '',
-            nickname: '',
-            logined: true
+        this.state={
+           post:[],
+           answered:false,
+           answerdisplay:false
         }
-
-        this.send = this.save.bind(this);
+        this.answered=this.answered.bind(this)
     }
-
-    componentDidMount() {
-        console.log("login")
-        firebase.auth().onAuthStateChanged(user => {
-          this.setState({ user })
-        })
-      }
-
-    handleInputcourse(event) {
-        this.setState({
-
-            course: event.target.value
-        })
-        
-    }
-    handleInputnickname(event) {
-        this.setState({
-            nickname: event.target.value
-
-        })
-    }
-    // coursecheck = () => {
-    //     var userdb = db.collection('users').doc('user.uid');
-    //     if (userdb.course == "") {
-
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // }
-
 
   
+    componentWillMount(){
 
+        
 
-    save = (e) => {
-      
-        const user = firebase.auth().currentUser
-        if (user) {
-            db.collection("users").doc(user.uid).set({
-                name: user.displayName,
-                pic: user.photoURL || '/images/profile_placeholder.png',
-                email: user.email,
-                course: this.state.course,
-                nickname: this.state.nickname
-            })
-                .then(() => {
-                    this.setState({
-                        logined : true
+        const postsref = db.collection("posts")
+        postsref.onSnapshot((snapshot) => {
+            const posts = snapshot.docs.map( (postdoc) =>{
+                
+                const post = postdoc.data();
+                    //  console.log(post);
+                if(post.postimageurl.array!=0){
+                    console.log(post.postimageurl)
+                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
+                    pathref.getDownloadURL().then((url)=>{ 
+
+                        this.setState((state)=>{
+                            const index =  state.posts.findIndex((post)=>{
+                                return post.id === postdoc.id;
+                            })
+                            state.posts[index].postimageurl.push(url)
+                            
+                            return state
+                        })
                     })
-                    console.log(`追加に成功しました `);
-                })
-                .catch((error) => {
-                    console.log(`追加に失敗しました (${error})`);
-                });
-        }
 
+                    
+                }
+                return {...post,id:postdoc.id}
+                
+               
+            })
+            
+            const user = firebase.auth().currentUser
+            const myposts= posts.filter((posts) => {return (posts.email === user.email);})
+            if(user.email==myposts.email){
+                this.setState({
+                answerdisplay:true
+                })
+            }
+            this.setState({
+                post:myposts
+            })
+           
+        });
+       
+       
+    
+    }
+    answered(isAnswered){
+        this.setState((state)=>{
+            state.post.answered=isAnswered
+            
+        })
+        console.log(this.state.post);
+        console.log(this.state.post.answered);
+        const ansewredPost = {
+            ...this.state.post,
+            answered: this.state.post.answered
+        }
+        db.collection("posts").doc(this.state.post.id).set(ansewredPost)        
         
     }
+   
 
+    render(){
+        console.log(this.state.post.answered)
+        return(
+            <div>
 
-    render() {
-        console.log(this.props.user)
-        return (
-            
-            
-                <div>
-                    <header>
-
-                      
-                    </header>
-                    <div className="main">
-                        <div className="App">
-                            <p className="App-intro">
-
-                            </p>
-
-
-                        </div>
-                    {this.state.logined?(
+                {this.props.user&&
                         
-                        this.props.user ? (
-                            <div>
-                                <div className="plfname">名前: {this.props.user && this.props.user.displayName}</div>
-                                <div className="plfemail">E-mail: {this.props.user && this.props.user.email}</div>
-                                <div className="plf">コース: {this.props.user && this.props.user.web}</div>
-                               <form>
-                                    <div className="plfnickname">ニックネームを入力:
-                    <input type='text' value={this.state.nickname} onChange={this.handleInputnickname.bind(this)} />
-                                    </div>
-                                    <div className="plfcourse">コースを入力:
-                    <input type='text' value={this.state.course} onChange={this.handleInputcourse.bind(this)} />
-                                    </div>
-                                    
-
-                                    {this.state.nickname == '' ?
-                                        (
-                                            <div>名前を入力してください</div>
-                                        ) : (
-                                            this.state.course == 'game' || this.state.course == 'web' || this.state.course == 'iphone' ?
-                                                (
-                                                    <button onClick={this.save}><Link to='/index'>geek-lineに登録</Link></button>
-
-                                                ) : (
-                                                    <div>コースを入力してください(WEBコース="web",GAMEコース="game",iPhoneコース="iphone")</div>
-
-                                                )
+                           <div>
+                                {this.state.post.title}
+                                {this.state.post.body}
+                                {this.state.post.name}
+                                {this.state.post.pictureurl}
+                               
+                                {this.state.post.course}
+                                {this.state.post.nickname}
+                                {this.state.post.favcount}
+                                {this.state.post.librarycount}
+                                {this.state.post.answered}
+                                {this.state.post.postimageurl&&
+                                    this.state.post.postimageurl.map((imageurl,j)=>{
+                                        return (
+                                        <div key={j}>
+                                        <img src={imageurl} className="post-image"></img>
+                                        </div>
                                         )
-                        
-                                    }
+                                    })
+                                }
+                            </div> 
+                         
+                           
+                   
+                }
 
-
-                                </form>
-
-                                <li className="gline-logout" onClick={this.props.logout}><Link to='/'>ログアウト</Link></li>
-                            </div>
-                        ) : (
-                                <div></div>
-                            )
-        
-          
-                        
-                    
-                    )
-                    :
-                    (
-                        <div></div>  
-                    )
-                    }
-
-</div>
-                    <footer>
-                        <div className="footer-content">
-
-                        </div>
-                    </footer>
-                </div>
-                
+                {this.state.answerdisplay?(
+                    this.state.post.answered?(
+                    <div>
+                        解決済み
+                        <button onClick={()=>{this.answered(false)}}>回答済み取り消し</button>
+                    </div>
+                )
+                :
+                (
+                    <div>
+                        未解決
+                    <button onClick={()=>{this.answered(true)}}>回答済みにする</button>
+                    </div>
+                )
+                ):(<div></div>)
+                }
             
-            
-        );
+            <Response match={this.props.match}/>
+            <Link to='/posts/index'>ホームへ戻る</Link>
+            </div>
+        )
     }
 }
-Login.propTypes = {
-      user: PropTypes.string.isRequired,
-    };
-    
-     
 
-
-export default Login
+export default Mypage

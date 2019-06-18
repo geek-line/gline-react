@@ -13,7 +13,8 @@ mypage.js = マイページのコンポーネント
 
 ページの要素としてヘッダーなどをコンポーネント化したJSファイルはcomponents/itemsのなかに保存してください
 
-
+# 動作環境
+MaterialUI: v4.0.2
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

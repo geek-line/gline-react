@@ -22,11 +22,10 @@ class Login extends React.Component {
             logined: true
         }
 
-        this.send = this.save.bind(this);
+        this.save = this.save.bind(this);
     }
 
     componentDidMount() {
-        console.log("login")
         firebase.auth().onAuthStateChanged(user => {
           this.setState({ user })
         })
@@ -125,7 +124,7 @@ class Login extends React.Component {
                                         ) : (
                                             this.state.course == 'game' || this.state.course == 'web' || this.state.course == 'iphone' ?
                                                 (
-                                                    <button onClick={this.save}><Link to='/index'>geek-lineに登録</Link></button>
+                                                    <button onClick={this.save}><Link to='/posts/index'>geek-lineに登録</Link></button>
 
                                                 ) : (
                                                     <div>コースを入力してください(WEBコース="web",GAMEコース="game",iPhoneコース="iphone")</div>

@@ -29,14 +29,14 @@ class Response extends React.Component{
             this.setState({ user })
           })
 
-        const responsesref = db.collection("posts").orderBy('timestamp', 'desc')
-        responsesref.limit(20).onSnapshot((snapshot) => {
+        const responsesref = db.collection("Responses").orderBy('timestamp', 'asc')
+        responsesref.onSnapshot((snapshot) => {
             const responses = snapshot.docs.map( (responsedoc) =>{
                 
                 const response = responsedoc.data();
                     //  console.log(post);
-                if(response.postimageurl!=[]){
-                    const pathref = storage.ref().child(`images/${response.postimageurl}`)
+                if(response.responseimageurl!=[]){
+                    const pathref = storage.ref().child(`images/${response.responseimageurls}`)
                     pathref.getDownloadURL().then((url)=>{ 
 
                         this.setState((state)=>{
@@ -57,11 +57,17 @@ class Response extends React.Component{
                 
                
             })
+            const refid =this.props.match.params.id
+            console.log(responses)
+            const res = responses.find((responses) => {return (responses.post_id === refid);})
+            console.log(res)
             this.setState({
-                responses : responses,
+                responses : responses.filter((responses) => {return (responses.post_id === refid);}),
                 
             })
+
            
+          
         });
         
     
@@ -106,11 +112,12 @@ class Response extends React.Component{
                              
                             
                              console.log(`追加に成功しました `);
-                             this.props.changepost()
+                             
                          })
                          .catch((error) => {
                              console.log(`追加に失敗しました (${error})`);
                          });
+
                      }else{
                          db.collection("Responses").doc().set({
                             post_id : this.props.match.params.id,
@@ -121,15 +128,18 @@ class Response extends React.Component{
                              nickname: userdb.data().nickname,
                              text: this.state.text,
                              favcount: 0,                           
-                             timestamp: new Date(),                            
+                             timestamp: new Date(),      
+                             responseimageurl:this.state.responseimageurls                      
                            
  
  
                          })        
                          .then(() => {
-                            
+                           
                              console.log(`追加に成功しました `);
-                             
+                            
+                                
+                            
                          })
                          .catch((error) => {
                              console.log(`追加に失敗しました (${error})`);
@@ -147,6 +157,7 @@ class Response extends React.Component{
          .catch(function(error){
          console.log(`取得失敗 (${error})`);
              });
+             
      }
 
 
@@ -164,7 +175,7 @@ class Response extends React.Component{
             const reader = new FileReader()
             reader.addEventListener("load",()=>{
                 this.setState((state)=>{
-                    state.postimageurls.push(reader.result)
+                    state.responseimageurls.push(reader.result)
                     state.files.push(file)
                     return state
                 })
@@ -178,11 +189,11 @@ class Response extends React.Component{
     }
 
     render(){
-        
+        console.log(this.state.responses)
         return(
            <div>
-                 {this.props.user&&
-                        this.state.response.map((response,i) => { 
+                 {this.state.responses&&
+                        this.state.responses.map((response,i) => { 
                         
                     return(
                         <div key={i}>
