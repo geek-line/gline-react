@@ -52,10 +52,12 @@ class Detail extends React.Component{
                 
                
             })
-            
+            // postのidを取り出す
             const uid =this.props.match.params.id
+            // uidとデータベースにあるpostのidを検索して取り出す
             const post= posts.find((posts) => {return (posts.id === uid);})
             const user = firebase.auth().currentUser
+            // postのuserと現在のuserのmailが同じなら回答済みにすることができるボタン追加
             if(user){
                 if(user.email==post.email){
                     this.setState({

@@ -24,15 +24,16 @@ class Posts extends React.Component{
             posts:null,
             isuser:false,
         }
-
+        // postrefにpostコレクションを時間順に並べて渡す
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
+        // postrefが更新されるたびにstestateする
         postsref.onSnapshot((snapshot) => {
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                 const post = postdoc.data();
-                    
+                // 画像がある時の処理
                 if(post.postimageurl.length != 0){
-                    
+                    // storageの画像をURLでとる
                     const pathref = storage.ref().child(`images/${post.postimageurl}`)
                     pathref.getDownloadURL().then((url)=>{ 
 
@@ -45,6 +46,7 @@ class Posts extends React.Component{
                         })
                     })
                 }
+
                 return {...post,id:postdoc.id}
             })  
 
@@ -52,7 +54,8 @@ class Posts extends React.Component{
                 posts : posts,
                 isLoading:true
             })
-
+            
+            // ユーザ登録を確認する
             const user=firebase.auth().currentUser
             if(user)
             {
@@ -94,7 +97,7 @@ class Posts extends React.Component{
 
     
 
-   
+//    投稿フォームに切り替える
     post = () =>{
         if(this.state.postpage==true){
         this.setState({

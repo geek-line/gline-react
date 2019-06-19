@@ -67,7 +67,7 @@ class Post extends React.Component {
     save = (e) => {
 
         
-
+        // 画像のアップロード
        if(this.state.files!=[]){
             e.preventDefault()
             this.state.files.forEach((file)=>{
@@ -85,8 +85,9 @@ class Post extends React.Component {
         userdb.get().then((userdb) => {
             if (userdb.exists) {
                 console.log("Document data:", userdb.data());
-            
+                    // 画像があるかないか
                     if(this.state.files==null){
+                        // データベースに保存
                         db.collection("posts").doc().set({
                             post_id : db.collection("posts").doc(),
                             name: userdb.data().name,
@@ -104,20 +105,6 @@ class Post extends React.Component {
 
                         })        
                         .then(() => {
-                            this.setState({
-                                post_id : db.collection("posts").doc(),
-                                name: userdb.data().name,
-                                pic: userdb.data().pic,
-                                email: userdb.data().email,
-                                course: userdb.data().course,
-                                nickname: userdb.data().nickname,
-                                body: this.state.body,
-                                title: this.state.title,
-                                favcount: 0,
-                                librarycount: 0,
-                                timestamp: new Date(),
-                                index : true
-                            })
                             console.log(`追加に成功しました `);
                             this.props.changepost()
                         })
@@ -142,20 +129,7 @@ class Post extends React.Component {
 
                         })        
                         .then(() => {
-                            // this.setState({
-                            //     post_id : db.collection("posts").doc(),
-                            //     name: userdb.data().name,
-                            //     pic: userdb.data().pic,
-                            //     email: userdb.data().email,
-                            //     course: userdb.data().course,
-                            //     nickname: userdb.data().nickname,
-                            //     body: this.state.body,
-                            //     title: this.state.title,
-                            //     favcount: 0,
-                            //     librarycount: 0,
-                            //     timestamp: new Date(),
-                            //     index : true
-                            // })
+                    
                             console.log(`追加に成功しました `);
                             this.props.changepost()
                         })
