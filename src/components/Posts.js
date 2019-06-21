@@ -126,6 +126,7 @@ console.log( this.state.isuser)
                
                  
                     <div>
+                        <Login save={this.props.save} nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
                        {/* <Redirect to='/posts/login'/> */}
                        {/* <Route  path='/posts/index/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/> */}
                     </div>
@@ -134,9 +135,9 @@ console.log( this.state.isuser)
                 (
                 <div>
 
-                 <Route  exact path='/posts/index' render={()=><Index post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
-                 <Route  path='/posts/index/:id' render={(props)=><Detail match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
-                 <Route  path='/posts/index/user/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route   path='/posts/index' render={()=><Index post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/index/:id' render={(props)=><Detail match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  path='/posts/user/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                 </div>
                 )
                 }
@@ -146,7 +147,7 @@ console.log( this.state.isuser)
                 :
                 (
                 <div>
-                 <Login save={this.props.save} nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
+                
                 </div>
                 )
                 }

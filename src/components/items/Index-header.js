@@ -25,7 +25,7 @@ class IndexHeader extends React.Component{
                             <ul className="row center">
                                 <li className="m2 s12 col logo-gline"><a href="./posts/index"><span className='orange-text text-lighten-1'>G</span><span className='light-blue-text text-lighten-1'>L</span><span className='black-text'>I</span><span className='green-text text-lighten-1'>N</span><span className='red-text text-lighten-1'>E</span></a></li>
                                 <li className="m2 hide-on-small-and-down col"><p>GLINEとは</p></li>
-                                <li className="offset-m4 m2 hide-on-small-and-down col"><p>ヘルプ</p></li>
+                                <li className="offset-m4 m2 hide-on-small-and-down col"><Link to={`/posts/user/${this.props.user.uid}`}>マイページ</Link></li>
                                 <li className="m2 s12 col" onClick={this.props.logout} ><Link to='/'>ログアウト</Link></li>
                             
                             </ul>

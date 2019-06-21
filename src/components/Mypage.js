@@ -8,19 +8,43 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
 import Posts from "./Posts";
 import Response from "./Response"
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
 
 
 class Mypage extends React.Component{
     constructor(props){
         super(props)
         this.state={
-           post:[],
+            myposts:[],
            answered:false,
            answerdisplay:false
         }
         this.answered=this.answered.bind(this)
     }
 
+
+    handleExpandChange = (expanded) => {
+        this.setState({expanded: expanded});
+      };
+    
+      handleToggle = (event, toggle) => {
+        this.setState({expanded: toggle});
+      };
+    
+      handleExpand = () => {
+        this.setState({expanded: true});
+      };
+    
+      handleReduce = () => {
+        this.setState({expanded: false});
+      };
+   
+ 
   
     componentWillMount(){
 
@@ -33,7 +57,7 @@ class Mypage extends React.Component{
                 const post = postdoc.data();
                     //  console.log(post);
                 if(post.postimageurl.array!=0){
-                    console.log(post.postimageurl)
+                   
                     const pathref = storage.ref().child(`images/${post.postimageurl}`)
                     pathref.getDownloadURL().then((url)=>{ 
 
@@ -55,14 +79,13 @@ class Mypage extends React.Component{
             })
             
             const user = firebase.auth().currentUser
+            
             const myposts= posts.filter((posts) => {return (posts.email === user.email);})
-            if(user.email==myposts.email){
-                this.setState({
-                answerdisplay:true
-                })
-            }
+            console.log(myposts)
+            console.log(user)
+            
             this.setState({
-                post:myposts
+                myposts:myposts
             })
            
         });
@@ -87,36 +110,61 @@ class Mypage extends React.Component{
    
 
     render(){
-        console.log(this.state.post.answered)
+        // console.log(this.state.post.answered)
         return(
-            <div>
-
+           <div>
+             <div><h3　className='center' >自分の質問</h3></div>
+           
                 {this.props.user&&
-                        
-                           <div>
-                                {this.state.post.title}
-                                {this.state.post.body}
-                                {this.state.post.name}
-                                {this.state.post.pictureurl}
-                               
-                                {this.state.post.course}
-                                {this.state.post.nickname}
-                                {this.state.post.favcount}
-                                {this.state.post.librarycount}
-                                {this.state.post.answered}
-                                {this.state.post.postimageurl&&
-                                    this.state.post.postimageurl.map((imageurl,j)=>{
+                    this.state.myposts.map((post,i) => { 
+                        return(
+                            <div key={i}>
+                                
+                            <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                            <CardHeader
+                            title={post.title}
+                            subtitle={post.nickname}
+                            avatar={post.pic}
+                            actAsExpander={true}
+                            showExpandableButton={true}
+                            />
+                            <CardText>
+                            <Toggle
+                                toggled={this.state.expanded}
+                                onToggle={this.handleToggle}
+                                labelPosition="right"
+                                label="This toggle controls the expanded state of the component."
+                            />
+                            </CardText>
+                            <CardMedia
+                            expandable={true}
+                            // overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
+                            >
+                             {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
                                         return (
+                                            
                                         <div key={j}>
                                         <img src={imageurl} className="post-image"></img>
                                         </div>
                                         )
                                     })
                                 }
-                            </div> 
-                         
-                           
-                   
+                            
+                            {/* <img src="images/nature-600-337.jpg" alt="" /> */}
+                            </CardMedia>
+                            <CardTitle title={post.title} subtitle={post.nickname} expandable={true} />
+                            <CardText expandable={true}>
+                                {post.body}
+                            </CardText>
+                            <CardActions>
+                            <FlatButton label="Expand" onClick={this.handleExpand} />
+                            <FlatButton label="Reduce" onClick={this.handleReduce} />
+                            </CardActions>
+                            </Card>
+                            </div>
+                        )
+                    })                   
                 }
 
                 {this.state.answerdisplay?(
@@ -136,7 +184,7 @@ class Mypage extends React.Component{
                 ):(<div></div>)
                 }
             
-            <Response match={this.props.match}/>
+            
             <Link to='/posts/index'>ホームへ戻る</Link>
             </div>
         )

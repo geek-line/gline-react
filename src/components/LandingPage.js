@@ -3,7 +3,6 @@ import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 
-import Button from 'material-ui/RaisedButton'
 
 import firebase from '../firebase'
 import Login from "./Login";
@@ -16,7 +15,7 @@ class LandingPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-        
+
         }
 
     }
@@ -32,7 +31,7 @@ class LandingPage extends React.Component {
                     <div className="container-landingPage">
                         <div className='center'>
                             <div className="title-landingPage">自分のプロダクトを<br/>さらなるものへ</div>
-                            <Button label='GLINEにアクセス' onClick={this.props.login} containerElement={<Link to='/posts/index'/>} />
+                            <div><a className="btn" onClick={this.props.login}><Link to='/index'>GLINEにアクセス</Link></a></div>
                             <div><a href=""><i className="material-icons">details</i></a></div>
                         </div>
                         <div>
