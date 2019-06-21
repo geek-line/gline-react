@@ -31,7 +31,8 @@ class Detail extends React.Component{
                 
                 const post = postdoc.data();
                     //  console.log(post);
-                if(post.postimageurl !=[]){
+                if(post.postimageurl.length !=0
+                    ){
                     console.log(post.postimageurl)
                     const pathref = storage.ref().child(`images/${post.postimageurl}`)
                     pathref.getDownloadURL().then((url)=>{ 
