@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect,Link } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -14,6 +14,7 @@ import Index from './components/Index'
 import { db } from './firebase'
 import LoginHeader from './components/items/Login-header.js'
 import Detail from './components/Detail'
+import IndexHeader from './components/items/Index-header.js'
 
 
 
@@ -89,13 +90,23 @@ class App extends React.Component{
       <React.Fragment>
         <MuiThemeProvider>
           <BrowserRouter>
+          {this.state.user?(
+               <div>
+               <IndexHeader login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
+               <Route  path='/login' render={() => <Login save={this.save} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
+               <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
+               <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
+               <Route  path='/library' component={Library}/>
+               <Route  path='/mypage' component={MyPage}/>
+               </div>
+           
+          ):(
+            <div>
             <LoginHeader login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
             <Route exact path='/' render={()=> <LandingPage login={this.login} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>}/>
-            <Route  path='/login' render={() => <Login save={this.save} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
-            <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
-            <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
-            <Route  path='/library' component={Library}/>
-            <Route  path='/mypage' component={MyPage}/>
+            </div>
+          )
+          }
           </BrowserRouter>
         </MuiThemeProvider> 
       </React.Fragment>

@@ -119,7 +119,8 @@ console.log( this.state.isuser)
         return(
             <div>
                
-                {this.props.user&&this.state.isLoading&&
+                {this.props.user?(
+                    this.state.isLoading&&
                 <div>
                 {this.state.isuser?(
                
@@ -140,6 +141,14 @@ console.log( this.state.isuser)
                 )
                 }
                 </div>
+
+                )
+                :
+                (
+                <div>
+                 <Login save={this.props.save} nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
+                </div>
+                )
                 }
            
                
