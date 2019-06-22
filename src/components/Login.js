@@ -8,6 +8,15 @@ import Index from './Index'
 import PropTypes from 'prop-types';
 
 import "./style.css"
+import { makeStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import FilledInput from '@material-ui/core/FilledInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import LoginHeader from './items/Login-header'
 
 
@@ -23,6 +32,20 @@ class Login extends React.Component {
         }
 
         this.save = this.save.bind(this);
+        this.useStyles = makeStyles(theme => ({
+            root: {
+              display: 'flex',
+              flexWrap: 'wrap',
+            },
+            formControl: {
+              margin: theme.spacing(1),
+              minWidth: 120,
+            },
+            selectEmpty: {
+              marginTop: theme.spacing(2),
+            },
+          }));
+        
     }
 
     componentDidMount() {
@@ -44,19 +67,6 @@ class Login extends React.Component {
 
         })
     }
-    // coursecheck = () => {
-    //     var userdb = db.collection('users').doc('user.uid');
-    //     if (userdb.course == "") {
-
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // }
-
-
-  
-
 
     save = (e) => {
       
@@ -79,29 +89,35 @@ class Login extends React.Component {
                     console.log(`追加に失敗しました (${error})`);
                 });
         }
-
-        
     }
-
 
     render() {
         console.log(this.props.user)
+        const classes = this.useStyles().bind(this);
+        const [values, setValues] = React.useState({
+            age: '',
+            name: 'hai',
+        });
+
+        const inputLabel = React.useRef(null);
+        const [labelWidth, setLabelWidth] = React.useState(0);
+        React.useEffect(() => {
+            setLabelWidth(inputLabel.current.offsetWidth);
+        }, []);
+
+        function handleChange(event) {
+            setValues(oldValues => ({
+            ...oldValues,
+            [event.target.name]: event.target.value,
+            }));
+  }
+    
         return (
             
             
                 <div>
-                    <header>
-
+                   
                       
-                    </header>
-                    <div className="main">
-                        <div className="App">
-                            <p className="App-intro">
-
-                            </p>
-
-
-                        </div>
                     {this.state.logined?(
                         
                         this.props.user ? (
@@ -152,24 +168,35 @@ class Login extends React.Component {
                         <div></div>  
                     )
                     }
-
-</div>
-                    <footer>
-                        <div className="footer-content">
-
-                        </div>
-                    </footer>
-                </div>
+     <FormControl variant="filled" className={classes.formControl}>
+                    <InputLabel htmlFor="filled-age-simple">Age</InputLabel>
+                    <Select
+                    value={values.age}
+                    onChange={handleChange}
+                    input={<FilledInput name="age" id="filled-age-simple" />}
+                    >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                </FormControl>
+                
+                    </div> 
+                    
+               
                 
             
             
         );
     }
 }
-Login.propTypes = {
-      user: PropTypes.string.isRequired,
-    };
-    
+    Login.propTypes = {
+        user: PropTypes.string.isRequired,
+        };
+        
      
 
 
