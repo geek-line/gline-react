@@ -31,8 +31,6 @@ class Like extends React.Component{
        
     }
 
-
-
     handleExpandChange = (expanded) => {
         this.setState({expanded: expanded});
       };
@@ -49,32 +47,6 @@ class Like extends React.Component{
         this.setState({expanded: false});
       };
    
- 
-  
-   
-
-        
-
-       
-       
-    
-    
-    answered(isAnswered){
-        this.setState((state)=>{
-            state.post.answered=isAnswered
-            
-        })
-        console.log(this.state.post);
-        console.log(this.state.post.answered);
-        const ansewredPost = {
-            ...this.state.post,
-            answered: this.state.post.answered
-        }
-        db.collection("posts").doc(this.state.post.id).set(ansewredPost)        
-        
-    }
-   
-
     render(){
         const uid = firebase.auth().currentUser.uid 
         const likedposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
