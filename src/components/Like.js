@@ -25,7 +25,7 @@ class Like extends React.Component{
            answerdisplay:false,
            likedposts:[]
         }
-        
+        this.answered=this.answered.bind(this)
         
        
        
