@@ -45,54 +45,6 @@ class Mypage extends React.Component{
       };
    
  
-  
-    componentWillMount(){
-
-        
-
-        const postsref = db.collection("posts")
-        postsref.onSnapshot((snapshot) => {
-            const posts = snapshot.docs.map( (postdoc) =>{
-                
-                const post = postdoc.data();
-                    //  console.log(post);
-                if(post.postimageurl.array!=0){
-                   
-                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
-                    pathref.getDownloadURL().then((url)=>{ 
-
-                        this.setState((state)=>{
-                            const index =  state.posts.findIndex((post)=>{
-                                return post.id === postdoc.id;
-                            })
-                            state.posts[index].postimageurl.push(url)
-                            
-                            return state
-                        })
-                    })
-
-                    
-                }
-                return {...post,id:postdoc.id}
-                
-               
-            })
-            
-            const user = firebase.auth().currentUser
-            
-            const myposts= posts.filter((posts) => {return (posts.email === user.email);})
-            console.log(myposts)
-            console.log(user)
-            
-            this.setState({
-                myposts:myposts
-            })
-           
-        });
-       
-       
-    
-    }
     answered(isAnswered){
         this.setState((state)=>{
             state.post.answered=isAnswered
@@ -104,19 +56,30 @@ class Mypage extends React.Component{
             ...this.state.post,
             answered: this.state.post.answered
         }
-        db.collection("posts").doc(this.state.post.id).set(ansewredPost)        
+        db.collection("posts").doc(this.state.post.id).set(ansewredPost) .then(doc => 
+            {      
+                    console.log('いいねしました');
+
+            })
+            .catch(err => 
+            {
+            console.log('Error getting document', err);
+            });       
+    
         
     }
    
 
     render(){
+        const user = firebase.auth().currentUser  
+        const myposts= this.props.posts.filter((posts) => {return (posts.email === user.email);})
         // console.log(this.state.post.answered)
         return(
            <div>
              <div><h3　className='center' >自分の質問</h3></div>
            
                 {this.props.user&&
-                    this.state.myposts.map((post,i) => { 
+                    myposts.map((post,i) => { 
                         return(
                             <div key={i}>
                                 

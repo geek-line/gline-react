@@ -26,11 +26,22 @@ class Index extends React.Component{
             pictureurl:"",
             detail:[],
             expanded: false,
-
+           
         }
-        
+         
+
     }
 
+
+   
+
+ 
+                    
+            
+            
+        
+
+      
    
     handleExpandChange = (expanded) => {
         this.setState({expanded: expanded});
@@ -57,20 +68,24 @@ class Index extends React.Component{
             right: 30,
             bottom: 30
         }
-       
+        // console.log(this.props.posts)
         return(
             
             <div>
                 {this.props.user&&
                     this.props.postpage==false&&
                     <div>
-                    <div><h3　className='center' >回答募集中の質問</h3></div>
-                        {this.props.posts.map((post,i) => { 
-                            return(
-
-
+                    <div><h3　className='center' >回答募集中の質問</h3>
+                    <Link to='/posts/like'> いいね</Link>
+                    </div>
+                    
+                        {this.props.posts.map((post,i) => (
+                            
+                          
+                            
                                 <div key={i}>
-                                
+                                   
+                                <button key={i} onClick={e=>this.props.like(post,i)}>{post.favcount}</button>
                                 <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
                                 <CardHeader
                                 title={post.title}
@@ -113,7 +128,7 @@ class Index extends React.Component{
                                 <FlatButton label="Reduce" onClick={this.handleReduce} />
                                 </CardActions>
                                 </Card>
-
+                               
                                     {/* <Link to={`/posts/index/${post.id}`}>{post.title}</Link> */}
 
 
@@ -134,10 +149,10 @@ class Index extends React.Component{
                                     {post.librarycount}
                                     {/* {post.timestamp.toString()} */}
                                 </div> 
-                            )  
+                            
 
-                        })
-                        }
+                        )
+                        )}
                         </div>
                 }
                  <div>
