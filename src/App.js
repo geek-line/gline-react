@@ -26,11 +26,13 @@ class App extends React.Component{
     isLogging:false,
     course: '',
     nickname: '',
-    logined: true
+    logined: true,
+    search:"",
+    searching:""
     }
 
     this.send = this.save.bind(this);
-
+    this.handleInputsearch=this.handleInputsearch.bind(this);
   }
   save = (e) => {
       
@@ -56,7 +58,20 @@ class App extends React.Component{
 
     
 }
+searchdo=()=> {
+  this.setState({
 
+    searching: this.state.search
+  })
+  
+}
+handleInputsearch(event) {
+  this.setState({
+
+      search: event.target.value
+  })
+  
+}
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -92,7 +107,7 @@ class App extends React.Component{
           <BrowserRouter>
           {this.state.user?(
                <div>
-               <IndexHeader login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
+               <IndexHeader searchdo ={this.searchdo} searching ={this.state.searching} handleInputsearch ={this.handleInputsearch} search={this.state.search} login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
                <Route  path='/login' render={() => <Login save={this.save} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
                <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
                <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
