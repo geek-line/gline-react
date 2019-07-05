@@ -26,11 +26,13 @@ class App extends React.Component{
     isLogging:false,
     course: '',
     nickname: '',
-    logined: true
+    logined: true,
+    search:"",
+    searching:""
     }
 
     this.send = this.save.bind(this);
-
+    this.handleInputsearch=this.handleInputsearch.bind(this);
   }
   save = (e) => {
       
@@ -59,7 +61,10 @@ class App extends React.Component{
 
 handleInputsearch(event) {
   this.setState({
+
+      search: event.target.value
   })
+  
 }
 
   componentWillMount() {
