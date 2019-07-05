@@ -57,6 +57,11 @@ class App extends React.Component{
     
 }
 
+<<<<<<< HEAD
+=======
+handleInputsearch(event) {
+  this.setState({
+>>>>>>> feature/search
 
 
   componentWillMount() {
@@ -87,16 +92,17 @@ class App extends React.Component{
   }
 
    render(){
+    console.log(this.state.search)
     return(
       <React.Fragment>
         <MuiThemeProvider>
           <BrowserRouter>
           {this.state.user?(
                <div>
-               <IndexHeader login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
+               <IndexHeader  searching ={this.state.searching} handleInputsearch ={this.handleInputsearch} search={this.state.search} login={this.login } logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging}/>
                <Route  path='/login' render={() => <Login save={this.save} nickname={this.state.nickname} course={this.state.course} logout={this.logout} user={this.state.user} isLogging={this.state.isLogging} />}/>
                <Route  path='/form' render={()=><Post  logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
-               <Route  path='/posts' render={(props)=><Posts match={props.match} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
+               <Route  path='/posts' render={(props)=><Posts match={props.match} search={this.state.search} logout={this.logout} user ={this.state.user} isLogging = {this.state.isLogging} index ={this.state.index}/>}/>
                <Route  path='/library' component={Library}/>
                <Route  path='/mypage' component={MyPage}/>
                </div>
