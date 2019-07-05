@@ -57,12 +57,10 @@ class App extends React.Component{
     
 }
 
-<<<<<<< HEAD
-=======
 handleInputsearch(event) {
   this.setState({
->>>>>>> feature/search
-
+  })
+}
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged(user => {
