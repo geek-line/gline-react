@@ -85,7 +85,16 @@ class Detail extends React.Component{
             ...this.state.post,
             answered: this.state.post.answered
         }
-        db.collection("posts").doc(this.state.post.id).set(ansewredPost)        
+        db.collection("posts").doc(this.state.post.id).set(ansewredPost)
+        .then(doc => 
+            {      
+                    console.log('いいねしました');
+
+            })
+            .catch(err => 
+            {
+            console.log('Error getting document', err);
+            });             
         
     }
    
@@ -127,14 +136,14 @@ class Detail extends React.Component{
                     this.state.post.answered?(
                     <div>
                         解決済み
-                        <button onClick={()=>{this.answered(false)}}>回答済み取り消し</button>
+                        <button onClick={()=>this.answered(false)}>回答済み取り消し</button>
                     </div>
                 )
                 :
                 (
                     <div>
                         未解決
-                    <button onClick={()=>{this.answered(true)}}>回答済みにする</button>
+                    <button onClick={()=>this.answered(true)}>回答済みにする</button>
                     </div>
                 )
                 ):(<div></div>)

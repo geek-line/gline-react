@@ -27,6 +27,16 @@ class IndexHeader extends React.Component{
                                 <li className="m2 hide-on-small-and-down col"><p>GLINEとは</p></li>
                                 <li className="offset-m4 m2 hide-on-small-and-down col"><Link to={`/posts/user/${this.props.user.uid}`}>マイページ</Link></li>
                                 <li className="m2 s12 col" onClick={this.props.logout} ><Link to='/'>ログアウト</Link></li>
+                                
+                               
+                            
+                             <li><input type='text' value={this.props.search} onChange={this.props.handleInputsearch} /></li>
+                             
+                            
+                            
+                           
+                                             
+                            
                             
                             </ul>
                         </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link,Redirect } from 'react-router-dom';
 
 
 import firebase from '../firebase'
@@ -26,7 +26,11 @@ class LandingPage extends React.Component {
         
         return(
             <div>
-                
+                {this.props.user&&
+               
+                    <Redirect to='/posts/index'/>
+          
+                }
                 <div className="main">
                     <div className="container-landingPage">
                         <div className='center'>

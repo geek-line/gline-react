@@ -11,6 +11,7 @@ import Index from "./Index"
 import { loadOptions } from "@babel/core";
 import Login from "./Login"
 import Mypage from "./Mypage"
+import Like from "./Like"
 
 
 class Posts extends React.Component{
@@ -24,6 +25,7 @@ class Posts extends React.Component{
             posts:null,
             isuser:false,
         }
+        this.like = this.like.bind(this);
         // postrefにpostコレクションを時間順に並べて渡す
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
         // postrefが更新されるたびにstestateする
@@ -60,7 +62,7 @@ class Posts extends React.Component{
             if(user)
             {
                 const userdb = db.collection("users").doc(this.props.user.uid)    
-                console.log(userdb)
+                
                 var userref = userdb.get()
                 .then(doc => 
                 {
@@ -95,7 +97,40 @@ class Posts extends React.Component{
 
  
 
-    
+    like = (post,i)=> {
+        console.log(post)
+        const uid = firebase.auth().currentUser.uid
+       
+        if (post) {
+            if (post.favusers && post.favusers[uid]) {
+                post.favcount--;
+                post.favusers[uid] = null;
+            } else {
+                post.favcount++;
+                if (!post.favusers) {
+                    post.favusers = {};
+                }
+              post.favusers[uid] = true;
+            }   
+            var hopperRef = db.collection("posts").doc(post.id)    
+            console.log(hopperRef)
+            console.log(post.favcount)
+            hopperRef.update({
+            favcount:post.favcount,
+            favusers:post.favusers
+            })
+            .then(doc => 
+                {      
+                        console.log('いいねしました');
+
+                })
+                .catch(err => 
+                {
+                console.log('Error getting document', err);
+                });       
+        }
+             
+    }
 
 //    投稿フォームに切り替える
     post = () =>{
@@ -114,8 +149,8 @@ class Posts extends React.Component{
     render(){
      
        
-console.log( this.state.isLoading)
-console.log( this.state.isuser)
+// console.log( this.state.isLoading)
+// console.log( this.state.isuser)
         return(
             <div>
                
@@ -135,9 +170,10 @@ console.log( this.state.isuser)
                 (
                 <div>
 
-                 <Route   path='/posts/index' render={()=><Index post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
-                 <Route  exact path='/posts/index/:id' render={(props)=><Detail match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
-                 <Route  path='/posts/user/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/index' render={()=><Index search={this.props.search} like = {this.like} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/index/:id' render={(props)=><Detail like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/user/:id' render={(props)=><Mypage like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/like' render={(props)=><Like like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                 </div>
                 )
                 }
