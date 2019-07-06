@@ -34,14 +34,14 @@ class Index extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            slideIndex: "web",
+            slideIndex: "WEB",
             posts:[],
             postpage:false,
             user:null,
             pictureurl:"",
             detail:[],
             expanded: false,
-            currentcourse:"web",
+            currentcourse: "WEB",
            
         }
          
@@ -87,39 +87,42 @@ class Index extends React.Component{
         console.log(this.props.search)
         // console.log(this.currentcourse)
             const searchs = this.props.posts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
-            const posts = searchs.filter((posts) => {return (posts.course == this.state.currentcourse && posts.answered ==false );})
-            const answeredposts = searchs.filter((posts) => {return (posts.course == this.state.currentcourse && posts.answered ==true );})
+            const posts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==false );})
+            const answeredposts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==true );})
             return(
             
                 <div>
-                 <div>
-        <Tabs
-          onChange={this.handleChange}
-          value={this.state.slideIndex}
-          course={"web"}
-        >
-          <Tab label="WEB" value="web" />
-          <Tab label="GAME" value="game" />
-          <Tab label="iPhone" value="iphone" />
-        </Tabs>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleChange}
-        >
-          <div style={styles.headline}>
-           
-          </div>
-          <div style={styles.slide}>
-            
-          </div>
-          <div style={styles.slide}>
-            
-          </div>
-        </SwipeableViews>
-      </div>
+                
                 {this.props.user&&
                     this.props.postpage==false&&
                     <div>
+                    <Tabs
+                    onChange={this.handleChange}
+                    value={this.state.slideIndex}
+                    course={"web"}
+                    >
+                    <Tab label="WEB" value="WEB" />
+                    <Tab label="GAME" value="GAME" />
+                    <Tab label="iPhone" value="iPhone" />
+                    <Tab label="WEB Expert" value="WEB Expert" />
+                    </Tabs>
+                    <SwipeableViews
+                    index={this.state.slideIndex}
+                    onChangeIndex={this.handleChange}
+                    >
+                    <div style={styles.headline}>
+                    
+                    </div>
+                    <div style={styles.slide}>
+                        
+                    </div>
+                    <div style={styles.slide}>
+                        
+                    </div>
+                    <div style={styles.slide}>
+                        
+                    </div>
+                    </SwipeableViews>
                     <div><h3　className='center' >回答募集中の質問</h3>
                     <Link to='/posts/like'> いいね</Link>
                     </div>

@@ -15,77 +15,20 @@ class Detail extends React.Component{
         this.state={
            post:[],
            answered:false,
-           answerdisplay:false
+         
         }
         this.answered=this.answered.bind(this)
-    }
-
-  
-    componentWillMount(){
-
         
-
-        const postsref = db.collection("posts")
-        postsref.onSnapshot((snapshot) => {
-            const posts = snapshot.docs.map( (postdoc) =>{
-                
-                const post = postdoc.data();
-                    //  console.log(post);
-                if(post.postimageurl.length !=0
-                    ){
-                    console.log(post.postimageurl)
-                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
-                    pathref.getDownloadURL().then((url)=>{ 
-
-                        this.setState((state)=>{
-                            const index =  state.posts.findIndex((post)=>{
-                                return post.id === postdoc.id;
-                            })
-                            state.posts[index].postimageurl.push(url)
-                            
-                            return state
-                        })
-                    })
-
-                    
-                }
-                return {...post,id:postdoc.id}
-                
-               
-            })
-            // postのidを取り出す
-            const uid =this.props.match.params.id
-            // uidとデータベースにあるpostのidを検索して取り出す
-            const post= posts.find((posts) => {return (posts.id === uid);})
-            const user = firebase.auth().currentUser
-            // postのuserと現在のuserのmailが同じなら回答済みにすることができるボタン追加
-            if(user){
-                if(user.email==post.email){
-                    this.setState({
-                    answerdisplay:true
-                    })
-                }
-                this.setState({
-                    post:post
-                })
-            }
-        });
-       
-       
-    
     }
-    answered(isAnswered){
-        this.setState((state)=>{
-            state.post.answered=isAnswered
-            
-        })
-        console.log(this.state.post);
-        console.log(this.state.post.answered);
-        const ansewredPost = {
-            ...this.state.post,
-            answered: this.state.post.answered
+
+    answered(isAnswered,post){
+       
+        const anspost = {
+            ...post,
+            answered: isAnswered
         }
-        db.collection("posts").doc(this.state.post.id).set(ansewredPost)
+        console.log(post.id)
+        db.collection("posts").doc(post.id).set(anspost)
         .then(doc => 
             {      
                     console.log('いいねしました');
@@ -101,24 +44,29 @@ class Detail extends React.Component{
 
     render(){
         console.log(this.state.post.answered)
+        const uid =this.props.match.params.id
+        // uidとデータベースにあるpostのidを検索して取り出す
+        const post= this.props.posts.find((posts) => {return (posts.id === uid);})
+        const user = firebase.auth().currentUser
+        
         return(
             <div>
 
                 {this.props.user&&
                         
                            <div>
-                                {this.state.post.title}
-                                {this.state.post.body}
-                                {this.state.post.name}
-                                {this.state.post.pictureurl}
+                                {post.title}
+                                {post.body}
+                                {post.name}
+                                {post.pictureurl}
                                
-                                {this.state.post.course}
-                                {this.state.post.nickname}
-                                {this.state.post.favcount}
-                                {this.state.post.librarycount}
-                                {this.state.post.answered}
-                                {this.state.post.postimageurl&&
-                                    this.state.post.postimageurl.map((imageurl,j)=>{
+                                {post.course}
+                                {post.nickname}
+                                {post.favcount}
+                                {post.librarycount}
+                                {post.answered}
+                                {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
                                         return (
                                         <div key={j}>
                                         <img src={imageurl} className="post-image"></img>
@@ -132,18 +80,18 @@ class Detail extends React.Component{
                    
                 }
 
-                {this.state.answerdisplay?(
-                    this.state.post.answered?(
+                {user.email==post.email?(
+                    post.answered?(
                     <div>
                         解決済み
-                        <button onClick={()=>this.answered(false)}>回答済み取り消し</button>
+                        <button onClick={()=>this.answered(false,post)}>回答済み取り消し</button>
                     </div>
                 )
                 :
                 (
                     <div>
                         未解決
-                    <button onClick={()=>this.answered(true)}>回答済みにする</button>
+                    <button onClick={()=>this.answered(true,post)}>回答済みにする</button>
                     </div>
                 )
                 ):(<div></div>)

@@ -4,9 +4,19 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { db } from '../firebase'
 import firebase from '../firebase'
 import { storage } from '../firebase'
+import "./style.css"
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 
 
+const courses = [
+    'WEB',
+    'GAME',
+    'iPhone',
+    'WEB Expert',
+    
+  ];
 class Post extends React.Component {
     constructor(props) {
         super(props)
@@ -18,16 +28,29 @@ class Post extends React.Component {
             answered:false,
             timestamp:null,
             files:[],
-            postimageurls:[]
+            postimageurls:[],
+            selectedCourses: [],
             
 
         }
-
+        this.handleChange = this.handleChange.bind(this)
         this.save = this.save.bind(this);
         this.handleInputtitle = this.handleInputtitle.bind(this);
         this.handleInputbody = this.handleInputbody.bind(this);
         this.handleFileSelect = this.handleFileSelect.bind(this);
     }
+    handleChange = (event, index, selectedCourses) => this.setState({selectedCourses});
+    menuItems(selectedCourses) {
+        return courses.map((course) => (
+          <MenuItem
+            key={course}
+            insetChildren={true}
+            checked={selectedCourses && selectedCourses.indexOf(course) > -1}
+            value={course}
+            primaryText={course}
+          />
+        ));
+      }
 
     handleInputtitle(event) {
         this.setState({
@@ -93,7 +116,7 @@ class Post extends React.Component {
                             name: userdb.data().name,
                             pic: userdb.data().pic,
                             email: userdb.data().email,
-                            course: userdb.data().course,
+                            course: this.state.selectedCourses,
                             nickname: userdb.data().nickname,
                             body: this.state.body,
                             title: this.state.title,
@@ -118,7 +141,7 @@ class Post extends React.Component {
                             name: userdb.data().name,
                             pic: userdb.data().pic,
                             email: userdb.data().email,
-                            course: userdb.data().course,
+                            course: this.state.selectedCourses,
                             nickname: userdb.data().nickname,
                             body: this.state.body,
                             title: this.state.title,
@@ -157,7 +180,7 @@ class Post extends React.Component {
    
 
     render() {
-      
+        const {selectedCourses} = this.state;
         return (
             
          
@@ -180,9 +203,29 @@ class Post extends React.Component {
                                     
                                     <div className="posttitle">タイトルを入力:
                                         <input type='text' value={this.state.title} onChange={this.handleInputtitle.bind(this)} />
-                                    </div>
+                                    </div>   
+                                    <div class="input-field col s12">
                                     <div className="postbody">投稿内容を入力:
-                                        <input type='text' value={this.state.body} onChange={this.handleInputbody.bind(this)} />
+                                   
+                                    </div>
+                                    </div>
+                               
+                                    <div class="row">
+                                        <div class="input-field">
+                                        <textarea id="textarea1" class="materialize-textarea" type='textArea' value={this.state.body} onChange={this.handleInputbody.bind(this)} />
+                                        </div>
+                                    </div>
+      
+                                    <div className="postbody">質問ジャンルを入力:
+                                    <br/>
+                                    <SelectField
+                                        multiple={true}
+                                        hintText="Select genre"
+                                        value={selectedCourses}
+                                        onChange={this.handleChange}
+                                    >
+                                        {this.menuItems(selectedCourses)}
+                                    </SelectField>
                                     </div>
                                     <div className="file-field input-field">
                                         <div className="btn">

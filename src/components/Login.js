@@ -8,16 +8,16 @@ import Index from './Index'
 import PropTypes from 'prop-types';
 
 import "./style.css"
-import { makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import LoginHeader from './items/Login-header'
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+
+const courses = [
+  'WEB',
+  'GAME',
+  'iPhone',
+  'WEB Expert',
+  
+];
 
 
 
@@ -25,26 +25,14 @@ class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            selectedCourses: [],
             course: '',
             nickname: '',
             logined: true
         }
 
         this.save = this.save.bind(this);
-        this.useStyles = makeStyles(theme => ({
-            root: {
-              display: 'flex',
-              flexWrap: 'wrap',
-            },
-            formControl: {
-              margin: theme.spacing(1),
-              minWidth: 120,
-            },
-            selectEmpty: {
-              marginTop: theme.spacing(2),
-            },
-          }));
+        this.handleChange = this.handleChange.bind(this)
         
     }
 
@@ -54,13 +42,20 @@ class Login extends React.Component {
         })
       }
 
-    handleInputcourse(event) {
-        this.setState({
+    handleChange = (event, index, selectedCourses) => this.setState({selectedCourses});
+    menuItems(selectedCourses) {
+        return courses.map((course) => (
+          <MenuItem
+            key={course}
+            insetChildren={true}
+            checked={selectedCourses && selectedCourses.indexOf(course) > -1}
+            value={course}
+            primaryText={course}
+          />
+        ));
+      }
 
-            course: event.target.value
-        })
-        
-    }
+
     handleInputnickname(event) {
         this.setState({
             nickname: event.target.value
@@ -69,14 +64,14 @@ class Login extends React.Component {
     }
 
     save = (e) => {
-      
+       
         const user = firebase.auth().currentUser
         if (user) {
             db.collection("users").doc(user.uid).set({
                 name: user.displayName,
                 pic: user.photoURL || '/images/profile_placeholder.png',
                 email: user.email,
-                course: this.state.course,
+                course: this.state.selectedCourses,
                 nickname: this.state.nickname
             })
                 .then(() => {
@@ -84,6 +79,7 @@ class Login extends React.Component {
                         logined : true
                     })
                     console.log(`追加に成功しました `);
+                    
                 })
                 .catch((error) => {
                     console.log(`追加に失敗しました (${error})`);
@@ -93,25 +89,8 @@ class Login extends React.Component {
 
     render() {
         console.log(this.props.user)
-        const classes = this.useStyles().bind(this);
-        const [values, setValues] = React.useState({
-            age: '',
-            name: 'hai',
-        });
-
-        const inputLabel = React.useRef(null);
-        const [labelWidth, setLabelWidth] = React.useState(0);
-        React.useEffect(() => {
-            setLabelWidth(inputLabel.current.offsetWidth);
-        }, []);
-
-        function handleChange(event) {
-            setValues(oldValues => ({
-            ...oldValues,
-            [event.target.name]: event.target.value,
-            }));
-  }
-    
+        console.log(this.state.selectedCourses)
+        const {selectedCourses} = this.state;
         return (
             
             
@@ -124,13 +103,21 @@ class Login extends React.Component {
                             <div>
                                 <div className="plfname">名前: {this.props.user && this.props.user.displayName}</div>
                                 <div className="plfemail">E-mail: {this.props.user && this.props.user.email}</div>
-                                <div className="plf">コース: {this.props.user && this.props.user.web}</div>
+                               
                                <form>
                                     <div className="plfnickname">ニックネームを入力:
                     <input type='text' value={this.state.nickname} onChange={this.handleInputnickname.bind(this)} />
                                     </div>
-                                    <div className="plfcourse">コースを入力:
-                    <input type='text' value={this.state.course} onChange={this.handleInputcourse.bind(this)} />
+                                    <div className="plfcourse">コースを入力:<br/>
+
+                                    <SelectField
+                                        multiple={true}
+                                        hintText="Select courses"
+                                        value={selectedCourses}
+                                        onChange={this.handleChange}
+                                    >
+                                        {this.menuItems(selectedCourses)}
+                                    </SelectField>
                                     </div>
                                     
 
@@ -138,17 +125,18 @@ class Login extends React.Component {
                                         (
                                             <div>名前を入力してください</div>
                                         ) : (
-                                            this.state.course == 'game' || this.state.course == 'web' || this.state.course == 'iphone' ?
+                                            this.state.selectedCourses.length != 0?
                                                 (
                                                     <button onClick={this.save}><Link to='/posts/index'>geek-lineに登録</Link></button>
 
                                                 ) : (
-                                                    <div>コースを入力してください(WEBコース="web",GAMEコース="game",iPhoneコース="iphone")</div>
+                                                    <div>コースを選択してください</div>
 
                                                 )
                                         )
                         
                                     }
+                                    
 
 
                                 </form>
@@ -168,21 +156,7 @@ class Login extends React.Component {
                         <div></div>  
                     )
                     }
-     <FormControl variant="filled" className={classes.formControl}>
-                    <InputLabel htmlFor="filled-age-simple">Age</InputLabel>
-                    <Select
-                    value={values.age}
-                    onChange={handleChange}
-                    input={<FilledInput name="age" id="filled-age-simple" />}
-                    >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
+  
                 
                     </div> 
                     
@@ -193,11 +167,6 @@ class Login extends React.Component {
         );
     }
 }
-    Login.propTypes = {
-        user: PropTypes.string.isRequired,
-        };
-        
-     
 
 
 export default Login
