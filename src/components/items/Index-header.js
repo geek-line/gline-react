@@ -30,7 +30,7 @@ class IndexHeader extends React.Component{
                                 
                                
                             
-                             <li><input type='text' value={this.props.search} onChange={this.props.handleInputsearch} /></li>
+                            
                              
                             
                             

@@ -17,6 +17,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import {Tabs, Tab} from 'material-ui/Tabs';
 // From https://github.com/oliviertassinari/react-swipeable-views
 import SwipeableViews from 'react-swipeable-views';
+import TextField from 'material-ui/TextField';
+
 
 const styles = {
     headline: {
@@ -82,7 +84,8 @@ class Index extends React.Component{
         const button_style = {
             position: 'fixed',
             right: 30,
-            bottom: 30
+            bottom: 30,
+           
         }
         console.log(this.props.search)
         // console.log(this.currentcourse)
@@ -92,44 +95,31 @@ class Index extends React.Component{
             return(
             
                 <div>
-                
+                   
+                <li className="grey lighten-3"><div className="search"><TextField value={this.props.search} hintText="検索" onChange={this.props.handleInputsearch} id="textsearch"/></div>
+                </li>
                 {this.props.user&&
                     this.props.postpage==false&&
                     <div>
-                    <Tabs
-                    onChange={this.handleChange}
-                    value={this.state.slideIndex}
-                    course={"web"}
-                    >
-                    <Tab label="WEB" value="WEB" />
-                    <Tab label="GAME" value="GAME" />
-                    <Tab label="iPhone" value="iPhone" />
-                    <Tab label="WEB Expert" value="WEB Expert" />
-                    </Tabs>
-                    <SwipeableViews
-                    index={this.state.slideIndex}
-                    onChangeIndex={this.handleChange}
-                    >
-                    <div style={styles.headline}>
+                    <div id="tab" >
+                    <ul>
+                    <li className="WEB" onClick={()=>this.handleChange("WEB")} >WEB</li>
+                    <li className="GAME" onClick={()=>this.handleChange("GAME")}>GAME</li>
+                    <li className="iPhone"onClick={()=>this.handleChange("iPhone")}>iPhone</li>
+                    <li className="WEB Expert" onClick={()=>this.handleChange("WEB Expert")}>WEB Expert</li>
+                    </ul>
+                    </div>
                     
-                    </div>
-                    <div style={styles.slide}>
-                        
-                    </div>
-                    <div style={styles.slide}>
-                        
-                    </div>
-                    <div style={styles.slide}>
-                        
-                    </div>
-                    </SwipeableViews>
-                    <div><h3　className='center' >回答募集中の質問</h3>
-                    <Link to='/posts/like'> いいね</Link>
-                    </div>
-                    <div>
+                    <div id ="index"className={this.state.currentcourse} >
+                    
+                    <ul>
+                    <li><h3　className='notanswer' >回答募集中の質問</h3>
+                    
+                    
+                   
                         {posts.map((post,i) => (
                             
-                            <div key={i}>
+                            <div key={i} className="post">
                             <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
                             <CardHeader
                             title={post.title}
@@ -199,11 +189,11 @@ class Index extends React.Component{
 
                         )
                         )}
-                    </div>
-                    <div>
-                    <div><h3　className='center' >回答済みの質問</h3>
-                    <Link to='/posts/like'> いいね</Link>
-                    </div>
+                    </li>
+                    
+                    <li><h3　className='answer' >回答済みの質問</h3>
+                    
+                    
                      {answeredposts.map((post,i) => (
                          
                          <div key={i}>
@@ -276,6 +266,10 @@ class Index extends React.Component{
 
                      )
                      )}
+                     </li>
+                     
+                    
+                     </ul>
                      </div>
                      </div>
                 
@@ -293,7 +287,7 @@ class Index extends React.Component{
                         :
                         (
                             <div>
-                                <FloatingActionButton sytle={button_style} onClick={this.props.post} >
+                                <FloatingActionButton sytle={button_style} onClick={this.props.post} className="postbutton">
                                     <ContentAdd/>
                                 </FloatingActionButton>
                             </div>

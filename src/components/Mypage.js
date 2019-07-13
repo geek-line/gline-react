@@ -77,7 +77,7 @@ class Mypage extends React.Component{
         return(
            <div>
              <div><h3　className='center' >自分の質問</h3></div>
-           
+             <Link to='/posts/like'> いいねした投稿</Link>
                 {this.props.user&&
                     myposts.map((post,i) => { 
                         return(

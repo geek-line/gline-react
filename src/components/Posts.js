@@ -170,7 +170,7 @@ class Posts extends React.Component{
                 (
                 <div>
 
-                 <Route  exact path='/posts/index' render={()=><Index search={this.props.search} like = {this.like} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/index' render={()=><Index searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search} like = {this.like} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                  <Route  exact path='/posts/index/:id' render={(props)=><Detail like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                  <Route  exact path='/posts/user/:id' render={(props)=><Mypage like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                  <Route  exact path='/posts/like' render={(props)=><Like like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
