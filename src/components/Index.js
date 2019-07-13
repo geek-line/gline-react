@@ -96,11 +96,14 @@ class Index extends React.Component{
             
                 <div>
                    
-                <li className="grey lighten-3"><div className="search"><TextField value={this.props.search} hintText="検索" onChange={this.props.handleInputsearch} id="textsearch"/></div>
-                </li>
+                
                 {this.props.user&&
                     this.props.postpage==false&&
+                    
+
                     <div>
+                    <li className="grey lighten-3"><div className="search"><TextField value={this.props.search} hintText="検索" onChange={this.props.handleInputsearch} id="textsearch"/></div><br/></li>
+
                     <div id="tab" >
                     <ul>
                     <li className="WEB" onClick={()=>this.handleChange("WEB")} >WEB</li>
