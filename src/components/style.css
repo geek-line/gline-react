@@ -141,11 +141,12 @@ img{
 }
 input#textsearch{
   right: -6%;
-  width: 50%;
+  width: 30%;
 }
 li.gray.lighten-3{
   height:60px;
 }
-.search element.style{
-  width: 29vw;
+input#textsearch.textsearch{
+  width: 30vw;
+
 }

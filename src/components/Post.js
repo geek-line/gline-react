@@ -216,7 +216,7 @@ class Post extends React.Component {
                                         </div>
                                     </div>
       
-                                    <div className="postbody">質問ジャンルを入力:
+                                    <div className="postbody">質問ジャンルを入力(複数選択可能):
                                     <br/>
                                     <SelectField
                                         multiple={true}

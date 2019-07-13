@@ -20,17 +20,17 @@ import SwipeableViews from 'react-swipeable-views';
 import TextField from 'material-ui/TextField';
 
 
-const styles = {
-    headline: {
-      fontSize: 24,
-      paddingTop: 16,
-      marginBottom: 12,
-      fontWeight: 400,
-    },
-    slide: {
-      padding: 10,
-    },
-  };
+// const styles = {
+//     headline: {
+//       fontSize: 24,
+//       paddingTop: 16,
+//       marginBottom: 12,
+//       fontWeight: 400,
+//     },
+//     slide: {
+//       padding: 10,
+//     },
+//   };
 
 class Index extends React.Component{
     constructor(props){
@@ -102,7 +102,7 @@ class Index extends React.Component{
                     
 
                     <div>
-                    <li className="grey lighten-3"><div className="search"><TextField value={this.props.search} hintText="検索" onChange={this.props.handleInputsearch} id="textsearch"/></div><br/></li>
+                    <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li>
 
                     <div id="tab" >
                     <ul>
