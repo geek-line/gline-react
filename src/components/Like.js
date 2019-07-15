@@ -48,7 +48,7 @@ class Like extends React.Component{
         return(
            <div>
                 {/* <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li> */}
-             <div><h3　className='center' >いいねした質問</h3></div>
+            
            
                 {
                     likedposts.map((post,i) => { 

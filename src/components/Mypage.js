@@ -54,26 +54,35 @@ class Mypage extends React.Component{
         return(
            <div>
                <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li>
-                <div id="tab" >
+              
+                
+                    
+            <div className="mypage">
+             <ul id ="index"className={this.state.currentcourse} >
+             <li className="aaa  m4 hide-on-small-and-down col"><br/>
+             <img src={`${user.photoURL}`}/>
+             <br/>
+            {user.displayName}
+            <br/>
+            {user.email}
+             </li>
+             <li className="post offset-m4 m12 hide-on-small-and-down col">
+             <div id="tab" >
                     <ul>
                     <li className="Like" onClick={()=>this.handleChange("Like")} >Like</li>
-                    <li className="Post" onClick={()=>this.handleChange("Post")}>Post</li>
-                    
+                    <li className="Post" onClick={()=>this.handleChange("Post")}>Post</li> 
                     </ul>
-                    </div>
-                    
-            
-             <div id ="index"className={this.state.currentcourse} >
+            </div>
             
                 {this.props.user&&this.state.current=="Like"?(
-                    
+                    <div className="likepost offset-m4 m12 hide-on-small-and-down col">
                    <Like like = {this.props.like}  posts={this.props.posts} user={this.props.user} searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search} ></Like>
-                   
+                   </div>
                 )
                 :
                 (
                         
-                        <div><h3　className='center' >自分の質問</h3>
+                        <div className="mypost offset-m4 m8 hide-on-small-and-down col">
                     {myposts.map((post,i) => { 
                         return(
                             <div key={i} className="post"　>
@@ -119,9 +128,9 @@ class Mypage extends React.Component{
                
                     
                 }
-                
-                </div>  
-               
+                </li>
+                </ul>  
+               </div>
             <Link to='/posts/index'>ホームへ戻る</Link>
             </div>
         )
