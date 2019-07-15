@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import Like from "./Like"
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-
+import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 
 
@@ -48,11 +48,12 @@ class Mypage extends React.Component{
             const uid = firebase.auth().currentUser.uid 
         // ?const myposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
         
-            const myposts = this.props.posts.filter((posts) => {return (posts.email === user.email);})
-        
+            // const myposts = this.props.posts.filter((posts) => {return (posts.email === user.email);})
+            const myposts = this.props.posts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
         
         return(
            <div>
+               <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li>
                 <div id="tab" >
                     <ul>
                     <li className="Like" onClick={()=>this.handleChange("Like")} >Like</li>
@@ -66,7 +67,7 @@ class Mypage extends React.Component{
             
                 {this.props.user&&this.state.current=="Like"?(
                     
-                   <Like like = {this.props.like}  posts={this.props.posts} user={this.props.user}></Like>
+                   <Like like = {this.props.like}  posts={this.props.posts} user={this.props.user} searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search} ></Like>
                    
                 )
                 :

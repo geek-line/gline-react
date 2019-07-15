@@ -43,10 +43,11 @@ class Like extends React.Component{
    
     render(){
         const uid = firebase.auth().currentUser.uid 
-        const likedposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
-      
+        const likeposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
+        const likedposts = likeposts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
         return(
            <div>
+                {/* <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li> */}
              <div><h3　className='center' >いいねした質問</h3></div>
            
                 {
