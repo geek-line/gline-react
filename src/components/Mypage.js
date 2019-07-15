@@ -30,8 +30,39 @@ class Mypage extends React.Component{
            answerdisplay:false,
            likelist:false,
            current:"",
+           user:[],
         }
-       
+        const user = firebase.auth().currentUser
+        console.log(user.uid)  
+        const userdb = db.collection("users").doc(user.uid);
+        var userref = userdb.get()
+                .then(doc => 
+                {
+                    if (!doc.exists) 
+                    {
+                        console.log('No such document!');
+                        console.log(userdb)  
+                      
+                    } 
+                    else 
+                    {
+                        
+                         this.setState({
+                            user : doc.data(),
+                            
+                        })
+                        console.log(this.state.user)  
+                       
+                    }
+                })
+                .catch(err => 
+                {
+                console.log('Error getting document', err);
+                });
+            
+        
+        
+        
     }
 
     handleChange = (value) => {
@@ -45,11 +76,11 @@ class Mypage extends React.Component{
     render(){
         const user = firebase.auth().currentUser  
         // if(this.state.likelist==true){
-            const uid = firebase.auth().currentUser.uid 
+        console.log(this.state.user)
         // ?const myposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
         
-            // const myposts = this.props.posts.filter((posts) => {return (posts.email === user.email);})
-            const myposts = this.props.posts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
+            const myposts1 = this.props.posts.filter((posts) => {return (posts.email === user.email);})
+            const myposts = myposts1.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
         
         return(
            <div>
@@ -60,11 +91,22 @@ class Mypage extends React.Component{
             <div className="mypage">
              <ul id ="index"className={this.state.currentcourse} >
              <li className="aaa  m4 hide-on-small-and-down col"><br/>
-             <img src={`${user.photoURL}`}/>
-             <br/>
-            {user.displayName}
+             <img src={`${this.state.user.pic}`}/>
+             <br/>名前:
+             {this.state.user.name}<br/>
+             ニックネーム:
+            {this.state.user.nickname}
             <br/>
-            {user.email}
+            コース:
+          
+           {this.state.user.course&&this.state.user.course.map((courses,k)=>{
+                return (
+                        
+                    <div key={k}>
+                    {courses}
+                    </div>
+                )
+            })} 
              </li>
              <li className="post offset-m4 m12 hide-on-small-and-down col">
              <div id="tab" >
