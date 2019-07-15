@@ -2,8 +2,30 @@
 import React from "react";
 import "../bower_components/materialize/dist/css/materialize.css";
 import "./style.css";
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+import {Tabs, Tab} from 'material-ui/Tabs';
+// From https://github.com/oliviertassinari/react-swipeable-views
+import SwipeableViews from 'react-swipeable-views';
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
 import firebase, { db, storage } from '../firebase';
+
+
+
+const style = {
+    height: 20,
+    width: 60,
+    margin: 10,
+    textAlign: 'center',
+    display: 'inline-block',
+    
+  };
+
 
 class Response extends React.Component{
     constructor(props){
@@ -192,28 +214,36 @@ class Response extends React.Component{
         console.log(this.state.responses)
         return(
            <div>
+               <h2>回答一覧</h2>
                  {this.state.responses&&
-                        this.state.responses.map((response,i) => { 
+                        this.state.responses.map((post,i) => { 
                         
                     return(
                         <div key={i}>
                         
-                        {response.text}
-                        
-                        {response.responseimageurl&&
-                            response.responseimageurl.map((imageurl,j)=>{
-                                return (
-                                <div key={j}>
-                                <img src={imageurl} className="response-image"></img>
-                                </div>
-                                )
-                            })
-                        }
-                        {response.course}
-                        {response.nickname}
-                        {response.favcount}
-                        {response.librarycount}
-                        {/* {post.timestamp.toString()} */}
+                        <Card>
+                            <CardHeader
+                            
+                            subtitle={post.nickname}
+                            avatar={post.pic}
+                            >
+                            
+                            </CardHeader>
+                            <CardText>
+                            {post.text}
+                            </CardText>
+                            {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
+                                        return (
+                                            
+                                        <div key={j}>
+                                        <img src={imageurl} className="post-image"></img>
+                                        </div>
+                                        )
+                                    })
+                                }
+                          
+                            </Card> 
                         </div>
                     )
                     })

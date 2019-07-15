@@ -8,7 +8,24 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { storage } from '../firebase'
 import Posts from "./Posts";
 import Response from "./Response"
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
 
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+
+const style = {
+    height: 20,
+    width: 60,
+    margin: 10,
+    textAlign: 'center',
+    display: 'inline-block',
+    
+  };
 class Detail extends React.Component{
     constructor(props){
         super(props)
@@ -55,47 +72,76 @@ class Detail extends React.Component{
                 {this.props.user&&
                         
                            <div>
-                                {post.title}
-                                {post.body}
-                                {post.name}
-                                {post.pictureurl}
-                               
-                                {post.course}
-                                {post.nickname}
-                                {post.favcount}
-                                {post.librarycount}
-                                {post.answered}
-                                {post.postimageurl&&
+                             <Card　>
+                            <CardHeader
+                            title={post.title}
+                            subtitle={post.nickname}
+                            avatar={post.pic}
+                            >
+                                 {
+                                    post.answered?(
+                                    
+                                       
+                                        <div>解決済み</div>
+                                    
+                                )
+                                :
+                                (
+                                    
+                                    <div>未解決</div>
+                                )
+                                
+                                }
+                            </CardHeader>
+                            <CardText>
+                            {post.body}
+                            </CardText>
+                            {post.postimageurl&&
                                     post.postimageurl.map((imageurl,j)=>{
                                         return (
+                                            
                                         <div key={j}>
                                         <img src={imageurl} className="post-image"></img>
                                         </div>
                                         )
                                     })
                                 }
+                            <CardActions>
+                            {/* <FlatButton  label="詳細へ" href ={`/posts/index/${post.id}`} /> */}
+                                {post.favusers[this.props.user.uid]==null?
+                                (
+                                    <FlatButton  onClick={e=>this.props.like(post)} label="いいね"></FlatButton>
+                                )
+                                :
+                                (
+                                    <FlatButton  onClick={e=>this.props.like(post)} label="いいねを取り消す"></FlatButton>
+                                )
+                                }
+                                <Paper style={style} zDepth={0} >{post.favcount}</Paper>
+                                 {user.email==post.email?(
+                                    post.answered?(
+                                    
+                                       
+                                        <FlatButton onClick={()=>this.answered(false,post)}>解決済み取り消し</FlatButton>
+                                    
+                                )
+                                :
+                                (
+                                    
+                                    <FlatButton onClick={()=>this.answered(true,post)}>解決済みにする</FlatButton>
+                                )
+                                ):(<div></div>)
+                                }
+                            
+                            </CardActions>
+                            </Card> 
                             </div> 
                          
                            
                    
                 }
 
-                {user.email==post.email?(
-                    post.answered?(
-                    <div>
-                        解決済み
-                        <button onClick={()=>this.answered(false,post)}>回答済み取り消し</button>
-                    </div>
-                )
-                :
-                (
-                    <div>
-                        未解決
-                    <button onClick={()=>this.answered(true,post)}>回答済みにする</button>
-                    </div>
-                )
-                ):(<div></div>)
-                }
+               
             
             <Response match={this.props.match}/>
             <Link to='/posts/index'>ホームへ戻る</Link>
