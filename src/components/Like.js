@@ -11,10 +11,20 @@ import Response from "./Response"
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
-
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
+
+const style = {
+    height: 20,
+    width: 60,
+    margin: 10,
+    textAlign: 'center',
+    display: 'inline-block',
+    
+  };
 
 class Like extends React.Component{
     constructor(props){
@@ -26,61 +36,34 @@ class Like extends React.Component{
            likedposts:[]
         }
       
-        
-       
-       
+    
     }
 
-    handleExpandChange = (expanded) => {
-        this.setState({expanded: expanded});
-      };
-    
-      handleToggle = (event, toggle) => {
-        this.setState({expanded: toggle});
-      };
-    
-      handleExpand = () => {
-        this.setState({expanded: true});
-      };
-    
-      handleReduce = () => {
-        this.setState({expanded: false});
-      };
+ 
    
     render(){
         const uid = firebase.auth().currentUser.uid 
         const likedposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
-       
+      
         return(
            <div>
              <div><h3　className='center' >いいねした質問</h3></div>
            
-                {this.props.user&&
+                {
                     likedposts.map((post,i) => { 
                         return(
-                            <div key={i}>
-                                <button key={i} onClick={e=>this.props.like(post,i)}>{post.favcount}</button>
-                            <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                            <div key={i} className="post"　>
+                               
+                               <Card　>
                             <CardHeader
                             title={post.title}
                             subtitle={post.nickname}
                             avatar={post.pic}
-                            actAsExpander={true}
-                            showExpandableButton={true}
                             />
                             <CardText>
-                            <Toggle
-                                toggled={this.state.expanded}
-                                onToggle={this.handleToggle}
-                                labelPosition="right"
-                                label="This toggle controls the expanded state of the component."
-                            />
+                            {post.body}
                             </CardText>
-                            <CardMedia
-                            expandable={true}
-                            // overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-                            >
-                             {post.postimageurl&&
+                            {post.postimageurl&&
                                     post.postimageurl.map((imageurl,j)=>{
                                         return (
                                             
@@ -90,42 +73,27 @@ class Like extends React.Component{
                                         )
                                     })
                                 }
-                            
-                            {/* <img src="images/nature-600-337.jpg" alt="" /> */}
-                            </CardMedia>
-                            <CardTitle title={post.title} subtitle={post.nickname} expandable={true} />
-                            <CardText expandable={true}>
-                                {post.body}
-                            </CardText>
                             <CardActions>
-                            <FlatButton label="Expand" onClick={this.handleExpand} />
-                            <FlatButton label="Reduce" onClick={this.handleReduce} />
+                            <FlatButton  label="詳細へ" href ={`/posts/index/${post.id}`} />
+                                {post.favusers[this.props.user.uid]==null?
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいね"></FlatButton>
+                                )
+                                :
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいねを取り消す"></FlatButton>
+                                )
+                                }
+                             <Paper style={style} zDepth={0} >{post.favcount}</Paper>
                             </CardActions>
-                            </Card>
+                            </Card> 
                             </div>
                         )
                     })                   
                 }
 
-                {this.state.answerdisplay?(
-                    this.state.post.answered?(
-                    <div>
-                        解決済み
-                        <button onClick={()=>{this.answered(false)}}>回答済み取り消し</button>
-                    </div>
-                )
-                :
-                (
-                    <div>
-                        未解決
-                    <button onClick={()=>{this.answered(true)}}>回答済みにする</button>
-                    </div>
-                )
-                ):(<div></div>)
-                }
+              
             
-            
-            <Link to='/posts/index'>ホームへ戻る</Link>
             </div>
         )
     }

@@ -63,15 +63,14 @@ class Index extends React.Component{
 
 
     render(){
-        console.log(this.props.user)
+       
         const button_style = {
             position: 'fixed',
             right: 30,
             bottom: 30,
            
         }
-        console.log(this.props.search)
-        // console.log(this.currentcourse)
+     
             const searchs = this.props.posts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
             const posts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==false );})
             const answeredposts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==true );})

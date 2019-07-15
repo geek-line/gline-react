@@ -76,7 +76,7 @@ class Posts extends React.Component{
                     } 
                     else 
                     {
-                        console.log('Document data:', doc.data());
+                        // console.log('Document data:', doc.data());
                     }
                 })
                 .catch(err => 
