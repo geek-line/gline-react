@@ -18,20 +18,18 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 // From https://github.com/oliviertassinari/react-swipeable-views
 import SwipeableViews from 'react-swipeable-views';
 import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
 
 
-// const styles = {
-//     headline: {
-//       fontSize: 24,
-//       paddingTop: 16,
-//       marginBottom: 12,
-//       fontWeight: 400,
-//     },
-//     slide: {
-//       padding: 10,
-//     },
-//   };
-
+const style = {
+    height: 20,
+    width: 60,
+    margin: 10,
+    textAlign: 'center',
+    display: 'inline-block',
+    
+  };
+  
 class Index extends React.Component{
     constructor(props){
         super(props)
@@ -62,25 +60,10 @@ class Index extends React.Component{
       };
       
    
-    handleExpandChange = (expanded) => {
-        this.setState({expanded: expanded});
-      };
-    
-      handleToggle = (event, toggle) => {
-        this.setState({expanded: toggle});
-      };
-    
-      handleExpand = () => {
-        this.setState({expanded: true});
-      };
-    
-      handleReduce = () => {
-        this.setState({expanded: false});
-      };
-     
+
 
     render(){
-
+        console.log(this.props.user)
         const button_style = {
             position: 'fixed',
             right: 30,
@@ -96,7 +79,7 @@ class Index extends React.Component{
             
                 <div>
                    
-                
+                   
                 {this.props.user&&
                     this.props.postpage==false&&
                     
@@ -122,28 +105,19 @@ class Index extends React.Component{
                    
                         {posts.map((post,i) => (
                             
-                            <div key={i} className="post">
-                            <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                            <div key={i} className="post"　  >
+                         
+                            
+                            <Card　>
                             <CardHeader
                             title={post.title}
                             subtitle={post.nickname}
                             avatar={post.pic}
-                            actAsExpander={true}
-                            showExpandableButton={true}
                             />
                             <CardText>
-                            <Toggle
-                                toggled={this.state.expanded}
-                                onToggle={this.handleToggle}
-                                labelPosition="right"
-                                label="This toggle controls the expanded state of the component."
-                            />
+                            {post.body}
                             </CardText>
-                            <CardMedia
-                            expandable={true}
-                            // overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-                            >
-                                {post.postimageurl&&
+                            {post.postimageurl&&
                                     post.postimageurl.map((imageurl,j)=>{
                                         return (
                                             
@@ -153,43 +127,21 @@ class Index extends React.Component{
                                         )
                                     })
                                 }
-                            
-                            {/* <img src="images/nature-600-337.jpg" alt="" /> */}
-                            </CardMedia>
-                            <CardTitle title={post.title} subtitle={post.nickname} expandable={true} />
-                            <CardText expandable={true}>
-                                <div>{post.body}</div>
-                                <Link to ={`/posts/index/${post.id}`} >詳細へ</Link>
-                                <button key={i} onClick={e=>this.props.like(post,i)}>{post.favcount}</button>
-                            </CardText>
                             <CardActions>
-                            <FlatButton label="Expand" onClick={this.handleExpand} />
-                            <FlatButton label="Reduce" onClick={this.handleReduce} />
-                            </CardActions>
-                            </Card>
-                            
-                                {/* <Link to={`/posts/index/${post.id}`}>{post.title}</Link> */}
-
-
-                                {/* <div className="post-body">{post.body}</div>
-                                {post.postimageurl&&
-                                    post.postimageurl.map((imageurl,j)=>{
-                                        return (
-                                            
-                                        <div key={j}>
-                                        <img src={imageurl} className="post-image"></img>
-                                        </div>
-                                        )
-                                    })
+                            <FlatButton  label="詳細へ" href ={`/posts/index/${post.id}`} />
+                                {post.favusers[this.props.user.uid]==null?
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいね"></FlatButton>
+                                )
+                                :
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいねを取り消す"></FlatButton>
+                                )
                                 }
-                                {post.course}
-                                {post.nickname}
-                                {post.favcount}
-                                {post.librarycount}
-                                {/* {post.timestamp.toString()} */}
+                             <Paper style={style} zDepth={0} >{post.favcount}</Paper>
+                            </CardActions>
+                            </Card> 
                             </div> 
-                            
-
                         )
                         )}
                     </li>
@@ -200,70 +152,39 @@ class Index extends React.Component{
                      {answeredposts.map((post,i) => (
                          
                          <div key={i}>
-                         <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-                         <CardHeader
-                         title={post.title}
-                         subtitle={post.nickname}
-                         avatar={post.pic}
-                         actAsExpander={true}
-                         showExpandableButton={true}
-                         />
-                         <CardText>
-                         <Toggle
-                             toggled={this.state.expanded}
-                             onToggle={this.handleToggle}
-                             labelPosition="right"
-                             label="This toggle controls the expanded state of the component."
-                         />
-                         </CardText>
-                         <CardMedia
-                         expandable={true}
-                         // overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-                         >
-                             {post.postimageurl&&
-                                 post.postimageurl.map((imageurl,j)=>{
-                                     return (
-                                         
-                                     <div key={j}>
-                                     <img src={imageurl} className="post-image"></img>
-                                     </div>
-                                     )
-                                 })
-                             }
-                         
-                         {/* <img src="images/nature-600-337.jpg" alt="" /> */}
-                         </CardMedia>
-                         <CardTitle title={post.title} subtitle={post.nickname} expandable={true} />
-                         <CardText expandable={true}>
-                             <div>{post.body}</div>
-                             <Link to ={`/posts/index/${post.id}`} >詳細へ</Link>
-                             <button key={i} onClick={e=>this.props.like(post,i)}>{post.favcount}</button>
-                         </CardText>
-                         <CardActions>
-                         <FlatButton label="Expand" onClick={this.handleExpand} />
-                         <FlatButton label="Reduce" onClick={this.handleReduce} />
-                         </CardActions>
-                         </Card>
-                         
-                             {/* <Link to={`/posts/index/${post.id}`}>{post.title}</Link> */}
-
-
-                             {/* <div className="post-body">{post.body}</div>
-                             {post.postimageurl&&
-                                 post.postimageurl.map((imageurl,j)=>{
-                                     return (
-                                         
-                                     <div key={j}>
-                                     <img src={imageurl} className="post-image"></img>
-                                     </div>
-                                     )
-                                 })
-                             }
-                             {post.course}
-                             {post.nickname}
-                             {post.favcount}
-                             {post.librarycount}
-                             {/* {post.timestamp.toString()} */}
+                          <Card　>
+                            <CardHeader
+                            title={post.title}
+                            subtitle={post.nickname}
+                            avatar={post.pic}
+                            />
+                            <CardText>
+                            {post.body}
+                            </CardText>
+                            {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
+                                        return (
+                                            
+                                        <div key={j}>
+                                        <img src={imageurl} className="post-image"></img>
+                                        </div>
+                                        )
+                                    })
+                                }
+                            <CardActions>
+                            <FlatButton  label="詳細へ" href ={`/posts/index/${post.id}`} />
+                                {post.favusers[this.props.user.uid]==null?
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいね"></FlatButton>
+                                )
+                                :
+                                (
+                                    <FlatButton  key={i} onClick={e=>this.props.like(post,i)} label="いいねを取り消す"></FlatButton>
+                                )
+                                }
+                             <Paper style={style} zDepth={0} >{post.favcount}</Paper>
+                            </CardActions>
+                            </Card>
                          </div> 
                          
 
