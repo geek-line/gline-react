@@ -33,13 +33,17 @@ class LandingPage extends React.Component {
                 }
                 <div className="main">
                     <div className="container-landingPage">
-                        <div className='center'>
-                            <div className="title-landingPage">自分のプロダクトを<br/>さらなるものへ</div>
+                        <div className='title center'>
+                        <br/><br/><br/><br/>
+                            <div className="title-landingPage"><h3>自分のプロダクトを<br/>さらなるものへ</h3><br/></div>
                             <div><a className="btn" onClick={this.props.login}><Link to='/index'>GLINEにアクセス</Link></a></div>
-                            <div><a href=""><i className="material-icons">details</i></a></div>
+                            <br/><br/><br/><br/>
+                            <div><a href="#about"><i className="material-icons">details</i></a></div>
+                           
                         </div>
-                        <div>
-                            <div className='center'>GLINEの3つの特徴</div>
+                        <div className='about'id="about">
+                            <br/><br/>
+                            <div className='aboutgline center' ><h4>GLINEの3つの特徴</h4><br/></div>
                             <ul className='row center'>
                                 <li className='col m4 s12'>
                                     <div className="card">

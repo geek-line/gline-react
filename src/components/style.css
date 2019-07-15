@@ -8,7 +8,19 @@ form, input, div ,button{
   padding: 0;
   font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
 }
-
+.aboutgline{
+  text-decoration: underline;
+}
+.about{
+  background-color: #E9EAE9;
+  height: 40vw;
+}
+.title.center{
+  height: 50vw;
+}
+.title-landingPage{
+  color: #fff;
+}
 .login-header{
     line-height: 80px;
     font-size: 30px;
@@ -28,6 +40,7 @@ form, input, div ,button{
   height: 900px;
   background-image: url('./img/landing-background.JPG');
   background-size: cover;
+  
 }
 
 img{

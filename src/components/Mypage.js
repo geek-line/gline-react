@@ -173,7 +173,7 @@ class Mypage extends React.Component{
                 </li>
                 </ul>  
                </div>
-            <Link to='/posts/index'>ホームへ戻る</Link>
+           
             </div>
         )
     }
