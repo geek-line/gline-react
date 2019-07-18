@@ -52,7 +52,7 @@ class Response extends React.Component{
             this.setState({ user })
           })
 
-        const responsesref = db.collection("Responses").orderBy('timestamp', 'asc')
+        const responsesref = db.collection("Responses").orderBy('timestamp', 'desc')
         responsesref.onSnapshot((snapshot) => {
             const responses = snapshot.docs.map( (responsedoc) =>{
                 
@@ -133,8 +133,12 @@ class Response extends React.Component{
                          })        
                          .then(() => {
                              
-                            
+                            this.setState({
+
+                                text:""
+                            })
                              console.log(`追加に成功しました `);
+                             
                              
                          })
                          .catch((error) => {
@@ -160,7 +164,10 @@ class Response extends React.Component{
                          .then(() => {
                            
                              console.log(`追加に成功しました `);
-                            
+                             this.setState({
+
+                                text:""
+                            })
                                 
                             
                          })
@@ -269,7 +276,7 @@ class Response extends React.Component{
                         <div key={i} className="response">
                         {post.email==user.email?
                         (
-                            <div className="cardright">
+                            <div className="cardleft">
                         <Card>
                             <CardHeader
                             
