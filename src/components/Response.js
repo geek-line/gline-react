@@ -58,7 +58,7 @@ class Response extends React.Component{
                 
                 const response = responsedoc.data();
                     //  console.log(post);
-                if(response.responseimageurl!=[]){
+                if(response.responseimageurl.length!=0){
                     const pathref = storage.ref().child(`images/${response.responseimageurls}`)
                     pathref.getDownloadURL().then((url)=>{ 
 
@@ -219,7 +219,7 @@ class Response extends React.Component{
     }
 
     render(){
-        console.log(this.state.responses)
+       
         const user = firebase.auth().currentUser
         return(
             <div>
