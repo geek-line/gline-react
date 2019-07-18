@@ -204,7 +204,12 @@ class Index extends React.Component{
                         this.props.postpage?(
                             <div>
                             <div><Post user = {this.props.user} postpage={this.props.postpage} changepost={this.props.changepost}/></div>
-                            <button onClick={this.props.changepost}>投稿をやめる</button>
+                           
+                            <div>
+                                <FloatingActionButton sytle={button_style}onClick={this.props.changepost} className="postbutton">
+                                   ×
+                                </FloatingActionButton>
+                            </div>
                             </div>
                         )
                         :

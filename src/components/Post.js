@@ -9,7 +9,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 
-
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 const courses = [
     'WEB',
     'GAME',
@@ -197,8 +197,11 @@ class Post extends React.Component {
                         
                         {this.props.user&&
                             <div>
+                                <Card className ="toukou">
                               <h3 className='center'>質問を投稿</h3>
-                             
+                              
+                              
+                              
                                 <form>
                                     
                                     <div className="posttitle">タイトルを入力:
@@ -264,6 +267,7 @@ class Post extends React.Component {
 
 
                                 </form>
+                                </Card>
                                
                             </div>
                         
