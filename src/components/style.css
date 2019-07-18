@@ -227,3 +227,17 @@ input#textsearch.textsearch{
   width: 30vw;
 
 }
+.detail{
+
+  margin: 3vw;
+}
+.cardright{
+  width:75%;
+  float:right;
+  margin:5px;
+}
+.cardleft{
+  width:75%;
+  float:left;
+  margin:5px;
+}

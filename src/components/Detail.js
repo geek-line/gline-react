@@ -67,11 +67,11 @@ class Detail extends React.Component{
         const user = firebase.auth().currentUser
         
         return(
-            <div>
+            <div className="detail">
 
                 {this.props.user&&
                         
-                           <div>
+                           <div　>
                              <Card　>
                             <CardHeader
                             title={post.title}
@@ -101,7 +101,7 @@ class Detail extends React.Component{
                                         return (
                                             
                                         <div key={j}>
-                                        <img src={imageurl} className="post-image"></img>
+                                        <img src={imageurl} className={`$post-image-{j}`}></img>
                                         </div>
                                         )
                                     })
@@ -142,9 +142,10 @@ class Detail extends React.Component{
                 }
 
                
+            <br/>
             
             <Response match={this.props.match}/>
-            <Link to='/posts/index'>ホームへ戻る</Link>
+            {/* <Link to='/posts/index'>ホームへ戻る</Link> */}
             </div>
         )
     }

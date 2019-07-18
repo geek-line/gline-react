@@ -17,6 +17,7 @@ import firebase, { db, storage } from '../firebase';
 
 
 
+
 const style = {
     height: 20,
     width: 60,
@@ -212,15 +213,63 @@ class Response extends React.Component{
 
     render(){
         console.log(this.state.responses)
+        const user = firebase.auth().currentUser
         return(
-           <div>
-               <h2>回答一覧</h2>
-                 {this.state.responses&&
-                        this.state.responses.map((post,i) => { 
-                        
+            <div>
+                <h3>回答する</h3>
+                <Card>
+                
+                            <CardText>
+                            
+                            <h5>回答を入力する</h5>
+                            <br/> 
+                            <TextField fullWidth={true} value={this.state.text} hintText="入力する" onChange={this.handleInputText.bind(this)} />  
+                            
+                            
+                    {/* <input type='text' value={this.state.Text} onChange={this.handleInputText.bind(this)} /> */}
+                    </CardText>
+                
+                <div className="file-field input-field">
+                    <div className="btn">
+                        <span>File</span>
+                        <input type="file" onChange={this.handleFileSelect.bind(this)} multiple />
+                    </div>
+                    <div className="file-path-wrapper">
+                        <input className="file-path validate" type="text"/>
+                    </div>
+                    {
+                        this.state.responseimageurls.map((imageurl,i)=>{
+                            return (
+                            <div key={i}>
+                                <img src={imageurl}></img>
+                            </div>
+                            )
+                        })
+                    }
+                    
+                </div>
+                {this.state.text?
+                (
+               
+                <FlatButton onClick={this.save}　label="回答を投稿する" />
+                )
+                :
+                (
+                    <FlatButton label="回答を投稿する" disabled={true} />
+                )
+                }
+                </Card>
+                <br/>
+                <h3>回答一覧</h3>
+                {this.state.responses&&
+                    this.state.responses.map((post,i) => { 
+                    
                     return(
-                        <div key={i}>
                         
+                        <div key={i} className="response">
+                        {post.email==user.email?
+                        (
+                            <div className="cardright">
                         <Card>
                             <CardHeader
                             
@@ -242,39 +291,48 @@ class Response extends React.Component{
                                         )
                                     })
                                 }
-                          
-                            </Card> 
+                            
+                        </Card> 
+                        </div>
+                        )
+                        :    
+                        (
+                            <div className="cardright">
+                        <Card>
+                            
+                            <CardHeader
+                            
+                            subtitle={post.nickname}
+                            avatar={post.pic}
+                            >
+                            
+                            </CardHeader>
+                            <CardText>
+                            {post.text}
+                            </CardText>
+                            {post.postimageurl&&
+                                    post.postimageurl.map((imageurl,j)=>{
+                                        return (
+                                            
+                                        <div key={j}>
+                                        <img src={imageurl} className="post-image"></img>
+                                        </div>
+                                        )
+                                    })
+                                }
+                            
+                        </Card> 
+                        </div>
+                        )
+                        }
                         </div>
                     )
-                    })
+                })
                 }
 
             
-                      <div className="posttitle">回答を入力:
-                            <input type='text' value={this.state.Text} onChange={this.handleInputText.bind(this)} />
-                        </div>
-                       
-                        <div className="file-field input-field">
-                            <div className="btn">
-                                <span>File</span>
-                                <input type="file" onChange={this.handleFileSelect.bind(this)} multiple />
-                            </div>
-                            <div className="file-path-wrapper">
-                                <input className="file-path validate" type="text"/>
-                            </div>
-                            {
-                                this.state.responseimageurls.map((imageurl,i)=>{
-                                    return (
-                                    <div key={i}>
-                                        <img src={imageurl}></img>
-                                    </div>
-                                    )
-                                })
-                            }
-                            
-                        </div>
-                        <button onClick={this.save}>回答を投稿する</button>
-             </div>
+                
+            </div>
                 
         );
         
