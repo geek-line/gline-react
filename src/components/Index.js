@@ -58,12 +58,11 @@ class Index extends React.Component{
           currentcourse:value
         });
       };
-      
-   
+
 
 
     render(){
-       
+        
         const button_style = {
             position: 'fixed',
             right: 30,
@@ -74,6 +73,7 @@ class Index extends React.Component{
             const searchs = this.props.posts.filter((searchs) => {return (searchs.body.indexOf(this.props.search) > -1)|| (searchs.title.indexOf(this.props.search) > -1);})
             const posts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==false );})
             const answeredposts = searchs.filter((posts) => {return (posts.course.indexOf(this.state.currentcourse) >= 0 && posts.answered ==true );})
+            
             return(
             
                 <div>
@@ -84,7 +84,7 @@ class Index extends React.Component{
                     
 
                     <div>
-                    <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} class="textsearch"id="textsearch"/></div><br/></li>
+                    <li className="grey lighten-3"><div className="search"><TextField fullWidth={true} value={this.props.search} hintText="検索する" onChange={this.props.handleInputsearch} className="textsearch"id="textsearch"/></div><br/></li>
 
                     <div id="tab" >
                     <ul>
