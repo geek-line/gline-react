@@ -52,7 +52,7 @@ class Index extends React.Component{
 
         
     handleChange = (value) => {
-        console.log(value)
+       
         this.setState({
           slideIndex: value,
           currentcourse:value
