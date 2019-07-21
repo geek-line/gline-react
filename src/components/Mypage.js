@@ -32,6 +32,7 @@ class Mypage extends React.Component{
            current:"",
            user:[],
         }
+        
         const user = firebase.auth().currentUser
         console.log(user.uid)  
         const userdb = db.collection("users").doc(user.uid);
@@ -64,6 +65,7 @@ class Mypage extends React.Component{
         
         
     }
+  
 
     handleChange = (value) => {
         this.setState({
@@ -160,6 +162,7 @@ class Mypage extends React.Component{
                                 )
                                 }
                              <Paper style={style} zDepth={0} >{post.favcount}</Paper>
+                             <FlatButton onClick={e=> this.props.remove(post.id)}>削除する</FlatButton>
                             </CardActions>
                             </Card> 
                             </div>

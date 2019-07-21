@@ -12,8 +12,17 @@ import { loadOptions } from "@babel/core";
 import Login from "./Login"
 import Mypage from "./Mypage"
 import Like from "./Like"
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
-
+const courses = [
+    'WEB',
+    'GAME',
+    'iPhone',
+    'WEB Expert',
+    
+  ];
+  
 class Posts extends React.Component{
     constructor(props){
         super(props)
@@ -24,7 +33,17 @@ class Posts extends React.Component{
             isLoading:false,
             posts:null,
             isuser:false,
+            meta:[],
+            selectedCourses:[],
+            nickname:"",
+            load:false,
+            course: '',
+
         }
+        this.handleChange = this.handleChange.bind(this)
+        
+        this.save = this.save.bind(this);
+        this.remove = this.remove.bind(this)
         this.like = this.like.bind(this);
         // postrefにpostコレクションを時間順に並べて渡す
         const postsref = db.collection("posts").orderBy('timestamp', 'desc')
@@ -33,11 +52,35 @@ class Posts extends React.Component{
             const posts = snapshot.docs.map( (postdoc) =>{
                 
                 const post = postdoc.data();
+                
                 // 画像がある時の処理
-                if(post.postimageurl.length != 0){
+                if(post.postimagenames.length != 0){
                     // storageの画像をURLでとる
-                    const pathref = storage.ref().child(`images/${post.postimageurl}`)
+                    //var pathref = storage.ref().child(`images/${post.postimagename}`)
+                    var pathref = storage.refFromURL(`gs://geek-line.appspot.com/${post.postimagenames}`)
+                    // pathref.getMetadata().then((metadata) =>{
+                    //     // Metadata now contains the metadata for 'images/forest.jpg'
+
+                    //   console.log(metadata)
+                    //   this.setState({
+                    //     meta:metadata
+                    // })
+                    //   }).catch(function(error) {
+                    //     console.log(error)
+                    //   });
+                    //   console.log(this.state.meta)
+                     
+                    // var pathref = storage.refFromURL(`gs://geek-line.appspot.com/images/${post.postimagenames}`)
+     
                     pathref.getDownloadURL().then((url)=>{ 
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.responseType = 'blob';
+                        xhr.onload = function(event) {
+                          var blob = xhr.response;
+                        };
+                        xhr.open('GET', url);
+                        xhr.send();
 
                         this.setState((state)=>{
                             const index =  state.posts.findIndex((post)=>{
@@ -73,20 +116,78 @@ class Posts extends React.Component{
                         this.setState({
                             isuser : true, 
                         })
+                        console.log(this.state.isuser);
                     } 
                     else 
                     {
-                        // console.log('Document data:', doc.data());
+                        this.setState({
+                            isuser : false, 
+                        })
+                        console.log('Document data:', doc.data());
+                        console.log(this.state.isuser);
                     }
                 })
                 .catch(err => 
                 {
                 console.log('Error getting document', err);
                 });
+                
 
             };           
         })
         
+    }
+
+    menuItems(selectedCourses) {
+        return courses.map((course) => (
+          <MenuItem
+            key={course}
+            insetChildren={true}
+            checked={selectedCourses && selectedCourses.indexOf(course) > -1}
+            value={course}
+            primaryText={course}
+          />
+        ));
+      }
+
+    handleChange = (event, index, selectedCourses) => this.setState({selectedCourses});
+
+
+    handleInputnickname(event) {
+        this.setState({
+            nickname: event.target.value
+
+        })
+    }
+
+    save = () => {
+        this.setState({
+            
+            load:true
+        })
+        const user = firebase.auth().currentUser
+        if (user) {
+            db.collection("users").doc(user.uid).set({
+                name: user.displayName,
+                pic: user.photoURL || '/images/profile_placeholder.png',
+                email: user.email,
+                course: this.state.selectedCourses,
+                nickname: this.state.nickname
+            })
+                .then(() => {
+                    this.setState({
+                        logined : true,
+                        load:true,
+                        isuser:false
+                    })
+                    console.log(`追加に成功しました `);
+                   
+                    
+                })
+                .catch((error) => {
+                    console.log(`追加に失敗しました (${error})`);
+                });
+        }
     }
 
     changepost=()=>{
@@ -95,7 +196,41 @@ class Posts extends React.Component{
     })
     }
 
- 
+    remove = (id)=>{
+        const postdb = db.ref(`posts/${id}`);
+        console.log(postdb)
+        postdb.remove()
+    }
+
+    // certificate=()=>{
+    //     const user=firebase.auth().currentUser
+    //     if(user)
+    //     {
+    //         const userdb = db.collection("users").doc(this.props.user.uid)    
+            
+    //         var userref = userdb.get()
+    //         .then(doc => 
+    //         {
+    //             if (!doc.exists) 
+    //             {
+    //                 console.log('No such document!');
+                   
+    //                 this.setState({
+    //                     isuser : false, 
+    //                 })
+    //             } 
+    //             else 
+    //             {
+    //                 // console.log('Document data:', doc.data());
+    //             }
+    //         })
+    //         .catch(err => 
+    //         {
+    //         console.log('Error getting document', err);
+    //         });
+
+    //     };    
+    // }
 
     like = (post,i)=> {
         console.log(post)
@@ -148,9 +283,9 @@ class Posts extends React.Component{
 
     render(){
      
-       
+        console.log(this.state.isuser);
 // console.log( this.state.isLoading)
-// console.log( this.state.isuser)
+ console.log( this.state.load)
         return(
             <div>
                
@@ -161,7 +296,7 @@ class Posts extends React.Component{
                
                  
                     <div>
-                        <Login save={this.props.save} nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
+                        <Login load={this.state.load}nickname={this.state.nickname}selectedCourses={this.state.selectedCourses}menuItems={this.menuItems}handleChange={this.handleChange}handleInputnickname ={this.handleInputnickname} save={this.save} certificate={this.state.certificate}  nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
                        {/* <Redirect to='/posts/login'/> */}
                        {/* <Route  path='/posts/index/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/> */}
                     </div>
@@ -172,7 +307,7 @@ class Posts extends React.Component{
 
                  <Route  exact path='/posts/index' render={()=><Index searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search} like = {this.like} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                  <Route  exact path='/posts/index/:id' render={(props)=><Detail like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
-                 <Route  exact path='/posts/user/:id' render={(props)=><Mypage  searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search}  like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
+                 <Route  exact path='/posts/user/:id' render={(props)=><Mypage  remove={this.remove}searching ={this.props.searching} handleInputsearch ={this.props.handleInputsearch} search={this.props.search}  like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                  <Route  exact path='/posts/like' render={(props)=><Like like = {this.like} match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/>
                 </div>
                 )

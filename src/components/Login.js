@@ -28,69 +28,48 @@ class Login extends React.Component {
             selectedCourses: [],
             course: '',
             nickname: '',
-            logined: true
+            logined: true,
+            
+
         }
 
-        this.save = this.save.bind(this);
-        this.handleChange = this.handleChange.bind(this)
-        
-    }
-
-    componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-          this.setState({ user })
-        })
-      }
-
-    handleChange = (event, index, selectedCourses) => this.setState({selectedCourses});
-    menuItems(selectedCourses) {
-        return courses.map((course) => (
-          <MenuItem
-            key={course}
-            insetChildren={true}
-            checked={selectedCourses && selectedCourses.indexOf(course) > -1}
-            value={course}
-            primaryText={course}
-          />
-        ));
-      }
-
-
-    handleInputnickname(event) {
-        this.setState({
-            nickname: event.target.value
-
-        })
-    }
-
-    save = (e) => {
+      
        
-        const user = firebase.auth().currentUser
-        if (user) {
-            db.collection("users").doc(user.uid).set({
-                name: user.displayName,
-                pic: user.photoURL || '/images/profile_placeholder.png',
-                email: user.email,
-                course: this.state.selectedCourses,
-                nickname: this.state.nickname
-            })
-                .then(() => {
-                    this.setState({
-                        logined : true
-                    })
-                    console.log(`追加に成功しました `);
-                    
-                })
-                .catch((error) => {
-                    console.log(`追加に失敗しました (${error})`);
-                });
-        }
     }
+
+
+  
+
+    // save = (e) => {
+       
+    //     const user = firebase.auth().currentUser
+    //     if (user) {
+    //         db.collection("users").doc(user.uid).set({
+    //             name: user.displayName,
+    //             pic: user.photoURL || '/images/profile_placeholder.png',
+    //             email: user.email,
+    //             course: this.state.selectedCourses,
+    //             nickname: this.state.nickname
+    //         })
+    //             .then(() => {
+    //                 this.setState({
+    //                     logined : true,
+    //                     load:true
+    //                 })
+    //                 console.log(`追加に成功しました `);
+                    
+                    
+    //             })
+    //             .catch((error) => {
+    //                 console.log(`追加に失敗しました (${error})`);
+    //             });
+    //     }
+    // }
 
     render() {
-        console.log(this.props.user)
-        console.log(this.state.selectedCourses)
-        const {selectedCourses} = this.state;
+        console.log(this.props.save)
+        console.log(this.props.selectedCourses)
+        const {selectedCourses} = this.props;
         return (
             
             
@@ -106,7 +85,7 @@ class Login extends React.Component {
                                
                                <form>
                                     <div className="plfnickname">ニックネームを入力:
-                    <input type='text' value={this.state.nickname} onChange={this.handleInputnickname.bind(this)} />
+                    <input type='text' value={this.props.nickname} onChange={this.props.handleInputnickname.bind(this)} />
                                     </div>
                                     <div className="plfcourse">コースを入力:<br/>
 
@@ -114,21 +93,30 @@ class Login extends React.Component {
                                         multiple={true}
                                         hintText="Select courses"
                                         value={selectedCourses}
-                                        onChange={this.handleChange}
+                                        onChange={this.props.handleChange}
                                     >
-                                        {this.menuItems(selectedCourses)}
+                                        {this.props.menuItems(selectedCourses)}
                                     </SelectField>
                                     </div>
                                     
 
-                                    {this.state.nickname == '' ?
+                                    {this.props.nickname == '' ?
                                         (
                                             <div>名前を入力してください</div>
                                         ) : (
-                                            this.state.selectedCourses.length != 0?
+                                            this.props.selectedCourses.length != 0?
                                                 (
-                                                    <button onClick={this.save}><Link to='/posts/index'>geek-lineに登録</Link></button>
+                                                    <div>
+                                                    {this.props.load==false?(
+                                                        <button onClick={e=>this.props.save()}><Link to='/posts/index'>geek-lineに登録</Link></button>
+                                                    )
+                                                    :
+                                                    (
+                                                        <div>登録中....</div> 
+                                                    )}
+                                                    </div>
 
+                                                    
                                                 ) : (
                                                     <div>コースを選択してください</div>
 
@@ -141,7 +129,7 @@ class Login extends React.Component {
 
                                 </form>
 
-                                <li className="gline-logout" onClick={this.props.logout}><Link to='/'>ログアウト</Link></li>
+                                {/* <li className="gline-logout" onClick={this.props.logout}><Link to='/'>ログアウト</Link></li> */}
                             </div>
                         ) : (
                                 <div></div>

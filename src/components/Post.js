@@ -30,6 +30,7 @@ class Post extends React.Component {
             files:[],
             postimageurls:[],
             selectedCourses: [],
+            postimagenames:[],
             
 
         }
@@ -80,6 +81,10 @@ class Post extends React.Component {
              })
             if(file){
                 reader.readAsDataURL(file)
+                this.setState((state)=>{
+                    state.postimagenames.push(file.name)
+                    return state
+                })
             }
         });
         
@@ -125,7 +130,9 @@ class Post extends React.Component {
                             librarycount: 0,
                             timestamp: new Date(),
                             answered:this.state.answered,
-                            postimageurl:[]
+                            postimageurl:[],
+                            postimagenames:[],
+
 
                         })        
                         .then(() => {
@@ -150,8 +157,8 @@ class Post extends React.Component {
                             librarycount: 0,
                             timestamp: new Date(),
                             answered:this.state.answered,
-                            postimageurl:this.state.postimageurls
-
+                            postimageurl:[],
+                            postimagenames:this.state.postimagenames,
                         })        
                         .then(() => {
                     

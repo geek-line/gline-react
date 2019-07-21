@@ -121,7 +121,7 @@ class Index extends React.Component{
                                         return (
                                             
                                         <div key={j}>
-                                        <img src={imageurl} className="post-image"></img>
+                                        <a href={imageurl} target="_blank"><img src={imageurl} className="post-image"></img></a>
                                         </div>
                                         )
                                     })
