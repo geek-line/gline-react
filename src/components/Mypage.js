@@ -42,7 +42,7 @@ class Mypage extends React.Component{
                     if (!doc.exists) 
                     {
                         console.log('No such document!');
-                        console.log(userdb)  
+                        // console.log(userdb)  
                       
                     } 
                     else 
@@ -52,7 +52,7 @@ class Mypage extends React.Component{
                             user : doc.data(),
                             
                         })
-                        console.log(this.state.user)  
+                        // console.log(this.state.user)  
                        
                     }
                 })
@@ -78,7 +78,7 @@ class Mypage extends React.Component{
     render(){
         const user = firebase.auth().currentUser  
         // if(this.state.likelist==true){
-        console.log(this.state.user)
+        // console.log(this.state.user)
         // ?const myposts= this.props.posts.filter((posts) => {return (posts.favusers != undefined&&posts.favusers[uid] == true);})
         
             const myposts1 = this.props.posts.filter((posts) => {return (posts.email === user.email);})

@@ -25,9 +25,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedCourses: [],
-            course: '',
-            nickname: '',
+           
             logined: true,
             
 
@@ -67,8 +65,9 @@ class Login extends React.Component {
     // }
 
     render() {
-        console.log(this.props.save)
-        console.log(this.props.selectedCourses)
+        // console.log(this.props.save)
+        // console.log(this.props.nickname)
+
         const {selectedCourses} = this.props;
         return (
             
@@ -85,7 +84,7 @@ class Login extends React.Component {
                                
                                <form>
                                     <div className="plfnickname">ニックネームを入力:
-                    <input type='text' value={this.props.nickname} onChange={this.props.handleInputnickname.bind(this)} />
+                    <input type='text' value={this.props.nickname} onChange={this.props.handleInputnickname} />
                                     </div>
                                     <div className="plfcourse">コースを入力:<br/>
 
@@ -100,7 +99,7 @@ class Login extends React.Component {
                                     </div>
                                     
 
-                                    {this.props.nickname == '' ?
+                                    {this.props.nickname == "" ?
                                         (
                                             <div>名前を入力してください</div>
                                         ) : (

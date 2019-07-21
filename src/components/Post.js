@@ -108,7 +108,7 @@ class Post extends React.Component {
         let id =0;
         let post_id = String(id)
         const user = firebase.auth().currentUser
-        console.log(user)
+        // console.log(user)
         const userdb = db.collection("users").doc(user.uid);
         userdb.get().then((userdb) => {
             if (userdb.exists) {

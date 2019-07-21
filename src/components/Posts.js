@@ -41,7 +41,7 @@ class Posts extends React.Component{
 
         }
         this.handleChange = this.handleChange.bind(this)
-        
+        this. handleInputnickname = this. handleInputnickname.bind(this)
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this)
         this.like = this.like.bind(this);
@@ -124,7 +124,7 @@ class Posts extends React.Component{
                             isuser : false, 
                         })
                         console.log('Document data:', doc.data());
-                        console.log(this.state.isuser);
+                        // console.log(this.state.isuser);
                     }
                 })
                 .catch(err => 
@@ -154,10 +154,13 @@ class Posts extends React.Component{
 
 
     handleInputnickname(event) {
+        
         this.setState({
             nickname: event.target.value
 
         })
+        // console.log(event.target.value)
+        // console.log(this.state.nickname)
     }
 
     save = () => {
@@ -233,7 +236,7 @@ class Posts extends React.Component{
     // }
 
     like = (post,i)=> {
-        console.log(post)
+       
         const uid = firebase.auth().currentUser.uid
        
         if (post) {
@@ -248,8 +251,8 @@ class Posts extends React.Component{
               post.favusers[uid] = true;
             }   
             var hopperRef = db.collection("posts").doc(post.id)    
-            console.log(hopperRef)
-            console.log(post.favcount)
+            // console.log(hopperRef)
+            // console.log(post.favcount)
             hopperRef.update({
             favcount:post.favcount,
             favusers:post.favusers
@@ -283,9 +286,9 @@ class Posts extends React.Component{
 
     render(){
      
-        console.log(this.state.isuser);
+        // console.log(this.state.isuser);
 // console.log( this.state.isLoading)
- console.log( this.state.load)
+//  console.log( this.state.load)
         return(
             <div>
                
@@ -296,7 +299,7 @@ class Posts extends React.Component{
                
                  
                     <div>
-                        <Login load={this.state.load}nickname={this.state.nickname}selectedCourses={this.state.selectedCourses}menuItems={this.menuItems}handleChange={this.handleChange}handleInputnickname ={this.handleInputnickname} save={this.save} certificate={this.state.certificate}  nickname={this.props.nickname} course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
+                        <Login load={this.state.load}nickname={this.state.nickname}selectedCourses={this.state.selectedCourses}menuItems={this.menuItems}handleChange={this.handleChange}handleInputnickname ={this.handleInputnickname} save={this.save} certificate={this.state.certificate}   course={this.props.course} logout={this.props.logout} user={this.props.user} isLogging={this.props.isLogging} />
                        {/* <Redirect to='/posts/login'/> */}
                        {/* <Route  path='/posts/index/:id' render={(props)=><Mypage match ={props.match} post={this.post} changepost={this.changepost} pictureurl = { this.state.pictureurl} posts={this.state.posts} postpage={this.state.postpage} user ={this.props.user} post = {this.post}/>}/> */}
                     </div>
