@@ -55,9 +55,11 @@ class Posts extends React.Component{
                 
                 // 画像がある時の処理
                 if(post.postimagenames.length != 0){
+                   
                     // storageの画像をURLでとる
                     //var pathref = storage.ref().child(`images/${post.postimagename}`)
-                    var pathref = storage.refFromURL(`gs://geek-line.appspot.com/${post.postimagenames}`)
+                    post.postimagenames.map((name)=>{
+                    var pathref = storage.refFromURL(`gs://geek-line.appspot.com/${name}`)
                     // pathref.getMetadata().then((metadata) =>{
                     //     // Metadata now contains the metadata for 'images/forest.jpg'
 
@@ -90,6 +92,7 @@ class Posts extends React.Component{
                             return state
                         })
                     })
+                 } )
                 }
 
                 return {...post,id:postdoc.id}
